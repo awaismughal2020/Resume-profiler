@@ -53,6 +53,86 @@ def call_openai(prompt: str, text: str) -> str:
     return response.choices[0].message.content.strip()
 
 
+def parse_resume_review_v3(review_text: str) -> dict:
+    """Enhanced parser for v3.1 prompt format"""
+
+    structured_response = {
+        "header_block": {},
+        "priority_assessment": [],
+        "actionable_improvements": {"immediate": [], "strategic": []},
+        "practical_examples": [],
+        "clarification_questions": [],
+        "next_steps": {},
+        "raw_response": review_text
+    }
+
+    try:
+        # Extract header block first
+        header_match = re.search(r'=== RESUME ASSESSMENT HEADER ===(.*?)=== END HEADER ===',
+                                 review_text, re.DOTALL)
+        if header_match:
+            header_content = header_match.group(1)
+            for line in header_content.strip().split('\n'):
+                if ':' in line:
+                    key, value = line.split(':', 1)
+                    structured_response["header_block"][key.strip().lower().replace(' ', '_')] = value.strip()
+
+        # Extract priority assessment
+        priority_pattern = r'### PRIORITY ASSESSMENT(.*?)(?=###|$)'
+        priority_match = re.search(priority_pattern, review_text, re.DOTALL)
+        if priority_match:
+            priority_content = priority_match.group(1)
+            critical_items = re.findall(r'\*\*(CRITICAL-\d+|HIGH-\d+)\*\*:\s*(.+?)(?=\*\*|$)',
+                                        priority_content, re.DOTALL)
+            for item_id, description in critical_items:
+                structured_response["priority_assessment"].append({
+                    "id": item_id,
+                    "description": description.strip()
+                })
+
+        # Extract actionable improvements
+        improvements_pattern = r'### ACTIONABLE IMPROVEMENTS(.*?)(?=###|$)'
+        improvements_match = re.search(improvements_pattern, review_text, re.DOTALL)
+        if improvements_match:
+            improvements_content = improvements_match.group(1)
+
+            # Extract immediate actions
+            immediate_pattern = r'\*\*Immediate Actions\*\*.*?:(.*?)(?=\*\*Strategic|$)'
+            immediate_match = re.search(immediate_pattern, improvements_content, re.DOTALL)
+            if immediate_match:
+                immediate_items = re.findall(r'[-*]\s*(.+)', immediate_match.group(1))
+                structured_response["actionable_improvements"]["immediate"] = [
+                    {"action": item.strip()} for item in immediate_items
+                ]
+
+            # Extract strategic enhancements
+            strategic_pattern = r'\*\*Strategic Enhancements\*\*.*?:(.*?)(?=###|$)'
+            strategic_match = re.search(strategic_pattern, improvements_content, re.DOTALL)
+            if strategic_match:
+                strategic_items = re.findall(r'[-*]\s*(.+)', strategic_match.group(1))
+                structured_response["actionable_improvements"]["strategic"] = [
+                    {"enhancement": item.strip()} for item in strategic_items
+                ]
+
+        # Extract clarification questions
+        questions_pattern = r'### CLARIFICATION QUESTIONS(.*?)(?=###|$)'
+        questions_match = re.search(questions_pattern, review_text, re.DOTALL)
+        if questions_match:
+            questions_content = questions_match.group(1)
+            question_items = re.findall(r'(\d+)\.\s*(.+?)(?=\d+\.|$)', questions_content, re.DOTALL)
+            for num, question in question_items:
+                structured_response["clarification_questions"].append({
+                    "number": int(num),
+                    "question": question.strip()
+                })
+
+        return structured_response
+
+    except Exception as e:
+        print(f"Parser error: {e}")
+        # Fallback to original parsing logic
+        return parse_resume_review(review_text)
+
 def parse_resume_review(review_text: str) -> dict:
     """Parse the structured review response into JSON sections with robust error handling"""
 
