@@ -42,7 +42,7 @@ def extract_text_from_pdf(pdf_file: UploadFile) -> str:
 def call_openai(prompt: str, text: str) -> str:
     """Helper to call OpenAI API"""
     response = client.chat.completions.create(
-        model="gpt-4-turbo",  # Or gpt-4 / gpt-3.5-turbo
+        model="gpt-4o",  # Or gpt-4 / gpt-3.5-turbo
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": text}
@@ -87,67 +87,27 @@ async def review_profile(file: UploadFile = File(...)):
             questions = []
             print(f"Warning: Could not parse JSON response for file {file.filename}")
 
-        # Save extracted text in file with UUID
+        # Generate UUID for file identification
         file_uuid = str(uuid.uuid4())
 
-        # Save original extracted text
-        original_file_path = os.path.join(DATA_DIR, f"{file_uuid}_original.txt")
-        with open(original_file_path, "w", encoding='utf-8') as f:
+        # Save original CV text in separate file
+        cv_file_path = os.path.join(DATA_DIR, f"{file_uuid}_cv.txt")
+        with open(cv_file_path, "w", encoding='utf-8') as f:
             f.write(extracted_text)
 
-        # Save the structured review as JSON
-        review_json_path = os.path.join(DATA_DIR, f"{file_uuid}_review.json")
-        review_data = {
-            "file_uuid": file_uuid,
-            "original_filename": file.filename,
-            "structured_review": structured_review,
-            "questions": questions,
-            "raw_response": raw_response,
-        }
+        # Save only the raw AI response in review file (no formatting, no headers)
+        review_file_path = os.path.join(DATA_DIR, f"{file_uuid}_review.txt")
+        with open(review_file_path, "w", encoding='utf-8') as f:
+            f.write(raw_response)
 
-        with open(review_json_path, "w", encoding='utf-8') as f:
-            json.dump(review_data, f, indent=2, ensure_ascii=False)
-
-        # Save the comprehensive review file (formatted text)
-        review_profile_file_path = os.path.join(DATA_DIR, f"{file_uuid}_review_profile.txt")
-        with open(review_profile_file_path, "w", encoding='utf-8') as f:
-            f.write("=" * 80 + "\n")
-            f.write("COMPLETE RESUME REVIEW ASSESSMENT\n")
-            f.write("=" * 80 + "\n\n")
-            f.write(f"File ID: {file_uuid}\n")
-            f.write(f"Original Filename: {file.filename}\n")
-            f.write("\n" + "=" * 80 + "\n")
-            f.write("ORIGINAL RESUME TEXT\n")
-            f.write("=" * 80 + "\n")
-            f.write(extracted_text)
-            f.write("\n\n" + "=" * 80 + "\n")
-            f.write("DETAILED REVIEW ASSESSMENT\n")
-            f.write("=" * 80 + "\n")
-            f.write(structured_review)
-
-            if questions:
-                f.write("\n\n" + "=" * 80 + "\n")
-                f.write("CLARIFICATION QUESTIONS\n")
-                f.write("=" * 80 + "\n")
-                for i, question in enumerate(questions, 1):
-                    f.write(f"{i}. {question}\n")
-
-        # Build response with properly structured data
-        file_info = {
-            "file_uuid": file_uuid,
-            "original_filename": file.filename,
-            "files_created": {
-                "original_text": f"{file_uuid}_original.txt",
-                "review_json": f"{file_uuid}_review.json"
-            }
-        }
-
+        # Build simplified response
         return JSONResponse(content={
-            "file": file_uuid,
-            "review_profile_file": f"{file_uuid}_review.json",
-            "resume_review": structured_review,  # Clean text review
-            "questions": questions,  # Parsed questions array
-            "file_info": file_info,
+            "file_id": file_uuid,
+            "cv_file": f"{file_uuid}_cv.txt",
+            "review_file": f"{file_uuid}_review.txt",
+            "resume_review": structured_review,
+            "questions": questions,
+            "original_filename": file.filename,
             "success": True
         })
 
@@ -155,62 +115,35 @@ async def review_profile(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Error processing resume: {str(e)}")
 
 
+# Updated Models
+class GenerateProfileInput(BaseModel):
+    file_id: str
+    questions: list  # List of question-answer objects
+
+
 @app.post("/generate-profile")
 async def generate_profile(input_data: GenerateProfileInput):
     try:
         file_uuid = input_data.file_id
-        review_profile_file_id = input_data.review_profile_file_id
-
-        # Validate that file_id and review_profile_file_id match
-        if file_uuid != review_profile_file_id:
-            # Extract UUID from review_profile_file_id if it contains the full filename
-            if review_profile_file_id.endswith('_review_profile.txt'):
-                extracted_uuid = review_profile_file_id.replace('_review_profile.txt', '')
-                if extracted_uuid != file_uuid:
-                    raise HTTPException(
-                        status_code=400,
-                        detail="file_id and review_profile_file_id do not match"
-                    )
-            # Also handle _review.json format
-            elif review_profile_file_id.endswith('_review.json'):
-                extracted_uuid = review_profile_file_id.replace('_review.json', '')
-                if extracted_uuid != file_uuid:
-                    raise HTTPException(
-                        status_code=400,
-                        detail="file_id and review_profile_file_id do not match"
-                    )
-            else:
-                raise HTTPException(
-                    status_code=400,
-                    detail="Invalid review_profile_file_id format or mismatch with file_id"
-                )
 
         # Define file paths
-        original_file_path = os.path.join(DATA_DIR, f"{file_uuid}_original.txt")
-        review_profile_path = os.path.join(DATA_DIR, f"{file_uuid}_review_profile.txt")
-        review_json_path = os.path.join(DATA_DIR, f"{file_uuid}_review.json")
+        cv_file_path = os.path.join(DATA_DIR, f"{file_uuid}_cv.txt")
+        review_file_path = os.path.join(DATA_DIR, f"{file_uuid}_review.txt")
 
         # Check if required files exist
-        if not os.path.exists(original_file_path):
-            raise HTTPException(status_code=404, detail=f"Original file not found: {file_uuid}_original.txt")
+        if not os.path.exists(cv_file_path):
+            raise HTTPException(status_code=404, detail=f"CV file not found: {file_uuid}_cv.txt")
 
-        if not os.path.exists(review_profile_path):
-            raise HTTPException(status_code=404,
-                                detail=f"Review profile file not found: {file_uuid}_review_profile.txt")
+        if not os.path.exists(review_file_path):
+            raise HTTPException(status_code=404, detail=f"Review file not found: {file_uuid}_review.txt")
 
-        # Load original profile text
-        with open(original_file_path, "r", encoding='utf-8') as f:
-            original_profile_text = f.read()
+        # Load CV content
+        with open(cv_file_path, "r", encoding='utf-8') as f:
+            cv_content = f.read()
 
-        # Load review profile content
-        with open(review_profile_path, "r", encoding='utf-8') as f:
-            review_profile_content = f.read()
-
-        # Load structured review data if available
-        structured_review_data = {}
-        if os.path.exists(review_json_path):
-            with open(review_json_path, "r", encoding='utf-8') as f:
-                structured_review_data = json.load(f)
+        # Load review content (raw AI response)
+        with open(review_file_path, "r", encoding='utf-8') as f:
+            review_content = f.read()
 
         # Load generation prompt
         if not os.path.exists(GENERATE_PROMPT_FILE):
@@ -226,20 +159,17 @@ async def generate_profile(input_data: GenerateProfileInput):
         ])
 
         # Prepare comprehensive input for resume generation
-        combined_input = f"""ORIGINAL RESUME TEXT:
-{original_profile_text}
+        combined_input = f"""ORIGINAL CV:
+{cv_content}
 
-COMPLETE REVIEW ASSESSMENT:
-{review_profile_content}
+REVIEW ASSESSMENT:
+{review_content}
 
 CLARIFICATION QUESTIONS AND ANSWERS:
 {formatted_questions}
 
-STRUCTURED REVIEW DATA (for reference):
-{json.dumps(structured_review_data, indent=2, ensure_ascii=False)}
-
 ---
-Please generate an improved resume based on the original resume, the detailed review assessment, and the provided answers to clarification questions."""
+Please generate an improved resume based on the original CV, the detailed review assessment, and the provided answers to clarification questions."""
 
         # Call OpenAI for final resume generation
         improved_resume = call_openai(generate_prompt, combined_input)
@@ -248,64 +178,37 @@ Please generate an improved resume based on the original resume, the detailed re
         from datetime import datetime
         generation_timestamp = datetime.now().isoformat()
 
-        # Save the improved resume with comprehensive metadata
+        # Save the improved resume
         improved_resume_path = os.path.join(DATA_DIR, f"{file_uuid}_improved_resume.txt")
         with open(improved_resume_path, "w", encoding='utf-8') as f:
             f.write("=" * 80 + "\n")
-            f.write("IMPROVED RESUME GENERATED\n")
+            f.write("IMPROVED RESUME\n")
             f.write("=" * 80 + "\n\n")
             f.write(f"File ID: {file_uuid}\n")
-            f.write(f"Review Profile File ID: {review_profile_file_id}\n")
             f.write(f"Generation Timestamp: {generation_timestamp}\n")
             f.write(f"Questions Answered: {len(input_data.questions)}\n")
             f.write("\n" + "=" * 80 + "\n")
-            f.write("IMPROVED RESUME CONTENT\n")
+            f.write("ENHANCED RESUME CONTENT\n")
             f.write("=" * 80 + "\n")
             f.write(improved_resume)
-            f.write("\n\n" + "=" * 80 + "\n")
-            f.write("CLARIFICATION ANSWERS PROVIDED\n")
-            f.write("=" * 80 + "\n")
-            f.write(formatted_questions)
-            f.write("\n\n" + "=" * 80 + "\n")
-            f.write("GENERATION METADATA\n")
-            f.write("=" * 80 + "\n")
-            f.write(f"Original File: {file_uuid}_original.txt\n")
-            f.write(f"Review File: {review_profile_file_id}\n")
-            f.write(f"Questions Count: {len(input_data.questions)}\n")
-            f.write(f"Generation Method: AI-Enhanced Resume Optimization\n")
 
-        # Save generation metadata as JSON
-        generation_metadata = {
-            "file_id": file_uuid,
-            "review_profile_file_id": review_profile_file_id,
-            "generation_timestamp": generation_timestamp,
-            "questions_count": len(input_data.questions),
-            "questions_provided": input_data.questions,  # Store original list format
-            "files_used": {
-                "original_file": f"{file_uuid}_original.txt",
-                "review_profile_file": f"{file_uuid}_review_profile.txt",
-                "review_json_file": f"{file_uuid}_review.json"
-            },
-            "output_file": f"{file_uuid}_improved_resume.txt"
-        }
-
-        generation_metadata_path = os.path.join(DATA_DIR, f"{file_uuid}_generation_metadata.json")
-        with open(generation_metadata_path, "w", encoding='utf-8') as f:
-            json.dump(generation_metadata, f, indent=2, ensure_ascii=False)
+            if input_data.questions:
+                f.write("\n\n" + "=" * 80 + "\n")
+                f.write("ANSWERED CLARIFICATION QUESTIONS\n")
+                f.write("=" * 80 + "\n")
+                f.write(formatted_questions)
 
         # Prepare response
         response_data = {
             "file_id": file_uuid,
-            "review_profile_file_id": review_profile_file_id,
             "improved_resume": improved_resume,
             "improved_resume_file": f"{file_uuid}_improved_resume.txt",
             "generation_metadata": {
                 "timestamp": generation_timestamp,
                 "questions_answered": len(input_data.questions),
-                "files_processed": {
-                    "original_file": f"{file_uuid}_original.txt",
-                    "review_file": review_profile_file_id,
-                    "output_file": f"{file_uuid}_improved_resume.txt"
+                "source_files": {
+                    "cv_file": f"{file_uuid}_cv.txt",
+                    "review_file": f"{file_uuid}_review.txt"
                 }
             },
             "success": True
