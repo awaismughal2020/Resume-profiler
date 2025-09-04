@@ -39,6 +39,7 @@ def extract_text_from_pdf(pdf_file: UploadFile) -> str:
         text += page.extract_text() or ""
     return text.strip()
 
+
 def call_openai(prompt: str, text: str) -> str:
     """Helper to call OpenAI API"""
     response = client.chat.completions.create(
@@ -50,6 +51,75 @@ def call_openai(prompt: str, text: str) -> str:
         temperature=0.7,
     )
     return response.choices[0].message.content.strip()
+
+
+def extract_questions_from_review(review_text: str) -> list:
+    """Extract questions from the AI review response"""
+    questions = []
+
+    # Look for the questions section in the review
+    sections = [
+        "EDUCATION SECTION",
+        "WORK EXPERIENCE SECTION",
+        "CERTIFICATION SECTION",
+        "SKILLS & PROJECTS SECTION",
+        "CAREER PROGRESSION QUESTIONS"
+    ]
+
+    for section in sections:
+        # Find the section in the text
+        section_pattern = rf"\*\*{section}.*?\*\*"
+        section_match = re.search(section_pattern, review_text, re.IGNORECASE)
+
+        if section_match:
+            # Get text after this section header until the next major section
+            section_start = section_match.end()
+
+            # Find the next major section (look for next ** header or ---)
+            next_section_pattern = r"(\*\*[A-Z\s]+\*\*|---)"
+            next_section_match = re.search(next_section_pattern, review_text[section_start:])
+
+            if next_section_match:
+                section_text = review_text[section_start:section_start + next_section_match.start()]
+            else:
+                section_text = review_text[section_start:]
+
+            # Extract numbered questions from this section
+            question_patterns = [
+                r'(\d+)\.\s+(.+?)(?=\d+\.|$)',  # Pattern: "1. Question text"
+                r'(\d+)\)\s+(.+?)(?=\d+\)|$)',  # Pattern: "1) Question text"
+                r'•\s+(.+?)(?=•|$)',  # Pattern: "• Question text"
+                r'-\s+(.+?)(?=-|$)'  # Pattern: "- Question text"
+            ]
+
+            for pattern in question_patterns:
+                matches = re.findall(pattern, section_text, re.DOTALL | re.MULTILINE)
+                for match in matches:
+                    if isinstance(match, tuple):
+                        question_text = match[1] if len(match) > 1 else match[0]
+                    else:
+                        question_text = match
+
+                    question_text = question_text.strip()
+                    question_text = re.sub(r'\s+', ' ', question_text)  # Clean up whitespace
+
+                    if question_text and len(question_text) > 10:  # Filter out very short items
+                        questions.append({
+                            "question": question_text
+                        })
+
+    # If no questions found with above patterns, try a more general approach
+    if not questions:
+        # Look for any line that ends with a question mark
+        question_lines = re.findall(r'^.+\?$', review_text, re.MULTILINE)
+        for i, question in enumerate(question_lines[:20]):  # Limit to 20 questions
+            question = question.strip()
+            if len(question) > 15:  # Filter out short questions
+                questions.append({
+                    "question": question
+                })
+
+    return questions
 
 
 # -------- Endpoints --------
@@ -75,17 +145,8 @@ async def review_profile(file: UploadFile = File(...)):
         # Call OpenAI
         raw_response = call_openai(review_prompt, extracted_text)
 
-        # Parse JSON response
-        try:
-            # Try to parse the JSON response
-            parsed_review = json.loads(raw_response)
-            structured_review = parsed_review.get("resume_review", "")
-            questions = parsed_review.get("questions", [])
-        except json.JSONDecodeError:
-            # Fallback: if JSON parsing fails, use raw response
-            structured_review = raw_response
-            questions = []
-            print(f"Warning: Could not parse JSON response for file {file.filename}")
+        # Extract questions from the raw response
+        questions = extract_questions_from_review(raw_response)
 
         # Generate UUID for file identification
         file_uuid = str(uuid.uuid4())
@@ -105,7 +166,7 @@ async def review_profile(file: UploadFile = File(...)):
             "file_id": file_uuid,
             "cv_file": f"{file_uuid}_cv.txt",
             "review_file": f"{file_uuid}_review.txt",
-            "resume_review": structured_review,
+            "resume_review": raw_response,
             "questions": questions,
             "original_filename": file.filename,
             "success": True
@@ -227,4 +288,3 @@ Please generate an improved resume based on the original CV, the detailed review
 @app.get("/health")
 async def health_check():
     return JSONResponse(content={"status": "healthy", "message": "Resume review service is running"})
-

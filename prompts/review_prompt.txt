@@ -103,12 +103,12 @@ Sequential Structure: Follow their resume chronologically and systematically
 Clarification-Focused: Seek specific details, tools, outcomes, and measurable results
 Experience-Specific: Ask about particular projects, companies, roles mentioned in their resume
 
-Question Distribution (15-30 Total Questions):
+Question Distribution (25-35 Total Questions):
 
 Education Questions: 5-6 questions (always start here)
-Work Experience Questions: 10-15 questions (MANDATORY: 2-3 questions per company/role, in reverse chronological order)
+Work Experience Questions: 15-20 questions (MANDATORY: 4-5 questions per company/role, in reverse chronological order)
 Certification Questions: 2-4 questions (each certification individually)
-Skills & Projects Questions: 3-6 questions (specific projects and technologies)
+Skills & Projects Questions: 10-12 questions (specific projects and technologies)
 Career Progression Questions: 2-4 questions (transitions and growth)
 
 TECHNICAL METRICS PROBING REQUIREMENTS
