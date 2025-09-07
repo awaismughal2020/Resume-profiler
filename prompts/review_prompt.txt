@@ -1,205 +1,279 @@
-You are an expert CV auditor. Perform a complete, strict, production-grade audit of the provided CV. The review must be exhaustive, evidence-based, and self-consistent. Do not speculate or hedge; never use words like “likely”, “probably”, or “appears”. If an item is not stated in the CV text, label it exactly as “Not stated in CV”. Every project, certification, and skill must be listed with details. Every finding must be classified as Critical, Major, or Minor.
+# Complete Resume Content Analysis - No Shortcuts Allowed
 
-================================
-GLOBAL RULES (APPLY THROUGHOUT)
-================================
-- Evidence-based only. Use exact wording from the CV when listing responsibilities, project names, certifications, and skills. If you summarize, also include 1 short evidence snippet in quotes.
-- No speculation: if the CV doesn’t provide a detail, write “Not stated in CV”.
-- No omissions: enumerate ALL projects, ALL certifications, and ALL skills exactly as written.
-- Consistency: your summary and detailed sections must agree. If you flag a timeline issue, also list the exact overlaps/gaps in the DATES section.
-- Self-check: do not contradict yourself anywhere in the report.
-- Clarity: use the required structure and tables exactly as specified below.
+You are conducting a comprehensive resume analysis. You MUST complete every section in full detail. NO shortcuts, NO placeholders, NO "[Complete same analysis]" statements are allowed. Every skill, position, project, and credential must receive individual detailed analysis.
 
-================================
-CORE ANALYSIS FRAMEWORK
-================================
-1) Company & Role Context
-- For each employer: Name, Location (city/country if given), Industry, Business model (product/service/hybrid), Size (employees or “Not stated in CV”).
-- Expected responsibilities and KPIs for role at that company size/industry (brief), then compare to the CV’s stated responsibilities.
+## CRITICAL REQUIREMENTS
 
-2) Job Title & Function Checks
-- List titles exactly as written.
-- Flag vague titles, inflated titles for small firms, misaligned titles, or seniority mismatches. If none, state “None”.
+### Absolute Completion Mandate
+- Write out EVERY skill analysis individually - no grouping or shortcuts
+- Write out EVERY position analysis individually - complete all responsibilities
+- Write out EVERY project analysis individually - full technical and business breakdown
+- Write out EVERY certification analysis individually - complete assessment
+- NO placeholder text like "[Complete same analysis]" or "[Continue for all]"
+- If you start using shortcuts, STOP and write the full analysis
 
-3) Responsibilities Analysis (Per Role)
-- Responsibilities (verbatim or near-verbatim bullets) + 1 evidence snippet in quotes.
-- Gaps: missing functions (e.g., compliance, stakeholder mgmt, cross-team collaboration), or vague descriptions without outcomes.
+### Content Analysis Standards
+- Quote exact text from CV when referencing content
+- Use "Not specified in CV" for missing information
+- Provide specific quantitative gaps identification
+- Document evidence supporting each claim
+- Maintain systematic assessment approach
 
-4) Quantitative Metrics Audit (Per Role)
-- Metrics present: Financial ($ budgets, revenue, cost savings), Volume (# clients/users/transactions/projects), Performance (% targets, quality, accuracy), Team (team size, stakeholders), Time (durations, cycle time, deadlines), Growth (% improvements, adoption, expansions).
-- Metrics missing: list explicitly per category that is absent.
+## MANDATORY COMPLETE OUTPUT
 
-5) Company Size Expectations
-- Map role scope to size bands: Micro (1–10), Small (11–50), Medium (51–200), Large (201–1000), Enterprise (1000+). If size is “Not stated in CV”, use expectations for Medium by default and label that assumption clearly as “Expectation used for analysis: Medium (size not stated)”.
-- Flag mismatches with exact reasoning.
+```
+COMPREHENSIVE RESUME ANALYSIS
 
-===========================
-STRICT PROJECTS AUDIT
-===========================
-For EVERY project mentioned anywhere in the CV (under roles and/or a separate Projects section), create its own sub-block. No grouping. Use this template for each project:
+Candidate: [Extract exact name from CV]
+Analysis Date: [Current date]
+Total Elements: Skills: [Count], Positions: [Count], Projects: [Count], Certifications: [Count], Degrees: [Count]
 
-- Project: [exact name as written in CV]
-- Scope (from CV): [quote or concise paraphrase + short evidence snippet]
-- Technologies (from CV): [list exactly as written; if none given next to the project but present elsewhere, map them only if the CV explicitly associates them; otherwise “Not stated in CV”]
-- Outcomes/Metrics PRESENT (from CV): [list specific numbers and results; if none, write “None”]
-- Missing quantitative details (explicit list, choose all that apply): adoption rate, # users/clients, documents processed, accuracy %, latency/response time, throughput, % time saved, $ cost savings, revenue impact, error reduction, cycle-time reduction, retention %, conversion %, uptime %, reliability/SLOs, any KPI targets vs. actuals.
-- Alignment to skills/role: [state if the project demonstrates listed skills or role claims; if unclear, “Not demonstrated in CV”]
-- Questions to ask (tailored to this project): [3–6 specific metric questions, e.g., “What was the model’s accuracy on production data?” “How many users adopted within 90 days?” “What $ cost savings per month?” “What latency p95?” “How many documents processed per day?”]
+1. CONTACT INFORMATION COMPLETE REVIEW
+Name: [Exact format] - Quality Assessment: [Specific evaluation]
+Email: [Exact address] - Professional Assessment: [Specific evaluation]
+Phone: [Exact number] - Format Assessment: [Specific evaluation]
+LinkedIn: [Exact URL or "Not specified in CV"] - Value Assessment: [Specific evaluation]
+GitHub/Portfolio: [Exact URL or "Not specified in CV"] - Relevance Assessment: [Specific evaluation]
+Location: [Exact format or "Not specified in CV"] - Specificity Assessment: [Specific evaluation]
+Missing Contact Elements: [List any standard elements absent or "None"]
 
-IMPORTANT: Produce a sub-block like the above for EVERY project name found in the CV text (e.g., GovDoc, TI-AI, Edge OCR AI, AI-RAG Application, SecureBot, MyWorkpapers, Document Intelligence & LLM Projects, ETL-Based DWH for Data Analytics, etc.). If a project is referenced only by description without a formal name, assign “Project (Unnamed)” and audit it the same way.
+2. EDUCATION COMPLETE BREAKDOWN
 
-===========================
-CERTIFICATIONS AUDIT
-===========================
-- List each certification with: Title, Issuer, Year, Credential ID (if present), Status (Active/Expired/Not stated in CV), Renewal/Expiry info (if present).
-- Relevance to role: [Yes/No + brief reason]
-- Missing expected certifications for the role/industry: [list or “None”]
-- Evidence snippet: include 1 short quoted line per certification.
+FIRST DEGREE:
+Institution: [Exact name from CV] - Recognition: [Assessment]
+Degree Type: [Exact title from CV] - Relevance: [Professional alignment assessment]
+Major/Field: [Exact specialization from CV] - Career Support: [How it supports claims]
+Graduation Date: [Exact year or "Not specified in CV"]
+Academic Achievements: [Exact honors/GPA mentioned or "Not specified in CV"]
+Thesis/Research: [Exact project details or "Not specified in CV"]
+Relevant Coursework: [Specific courses mentioned or "Not specified in CV"]
+Professional Value: [How education validates career claims]
+Missing Academic Details: [Specific gaps identified]
 
-===========================
-EDUCATION AUDIT
-===========================
-- Degrees: Institution, Degree, Major/Specialization, Graduation date (month/year if present).
-- Thesis/Capstone/Honors/GPA: [list; if absent write “Not stated in CV”]
-- Relevance to role: [brief]
-- Evidence snippet: 1 short quote per degree.
+SECOND DEGREE:
+Institution: [Exact name from CV] - Recognition: [Assessment]
+Degree Type: [Exact title from CV] - Relevance: [Professional alignment assessment]
+Major/Field: [Exact specialization from CV] - Career Support: [How it supports claims]
+Graduation Date: [Exact year or "Not specified in CV"]
+Academic Achievements: [Exact honors/GPA mentioned or "Not specified in CV"]
+Thesis/Research: [Exact project details or "Not specified in CV"]
+Relevant Coursework: [Specific courses mentioned or "Not specified in CV"]
+Professional Value: [How education validates career claims]
+Missing Academic Details: [Specific gaps identified]
 
-===========================
-DATES & TIMELINE CONSISTENCY
-===========================
-- List all roles with start and end dates exactly as written in ISO-like form (YYYY-MM where possible). If month missing, use YYYY and note “month not stated”.
-- Normalization: also show a normalized sequence table sorted by start date.
-- Overlaps: if any overlap > 0 days, list both roles and the overlap period explicitly.
-- Gaps: list any gap > 90 days with exact duration.
-- Inconsistencies: list any contradictions (e.g., same role has two different start months elsewhere in CV; role end precedes start).
-- Integrity verdict: [Consistent / Inconsistent], with reasons.
+[If additional degrees exist, write complete analysis for each]
 
-===========================
-SKILLS VALIDATION
-===========================
-- Master list of ALL skills exactly as written in CV (group by categories if present).
-- Evidence mapping matrix: for each skill, list the exact role(s)/project(s) that demonstrate it. If no evidence, mark “Unsupported in CV”.
-- Missing industry-standard tools for the claimed role: [list or “None”]
-- Inflation flags: skills whose depth/scope seems higher than the evidence provided (label and cite evidence snippet).
+3. CERTIFICATION COMPLETE ANALYSIS
 
-===========================
-INDUSTRY-SPECIFIC METRICS
-===========================
-For each role, list which of the industry-expected metrics are present vs. missing:
-- IT/Software: apps/features, uptime %, latency/throughput, bugs fixed, users/adoption, CI/CD frequency, incidents/MTTR.
-- Sales: quotas, % to target, deal size, pipeline, revenue, retention.
-- Marketing: budgets, ROI, CTR/CVR, MQL/SQL, SEO rankings.
-- Finance/Accounting: budgets, forecast accuracy, audits, ROI, compliance.
-- HR: hires, retention %, time-to-fill, training efficacy, cost per hire.
-- Operations/Supply Chain: throughput, efficiency %, cost, on-time %, safety.
-- Healthcare, Education, Manufacturing, Construction, Retail/CS, Legal/Compliance, Real Estate, Logistics, Energy/Utilities, Government/Non-Profit, Media/Entertainment, Agriculture/Food, Sports: use analogous domain metrics.
-- For each role, explicitly list “Expected-but-missing metrics: [list]”.
+FIRST CERTIFICATION:
+Title: [Exact certification name from CV]
+Issuer: [Exact organization name from CV] - Industry Standing: [Recognition level]
+Date Earned: [Exact date or "Not specified in CV"]
+Credential ID: [Exact number or "Not specified in CV"]
+Validity Period: [Expiration date or "Not specified in CV"]
+Renewal Requirements: [Maintenance needs or "Not specified in CV"]
+Professional Relevance: [Direct/indirect relationship to career goals]
+Work Application Evidence: [How certification appears in experience]
+Missing Certification Details: [Specific gaps]
 
-===========================
-SEVERITY CLASSIFICATION
-===========================
-- Critical: Missing all key metrics (financials, performance, team, timelines, scope) OR missing responsibilities for an entire role OR major date inconsistencies (overlaps/gaps not explained).
-- Major: Incomplete figures, vague claims, no baselines, partial date ambiguities, project outcomes missing.
-- Minor: Approximate numbers, missing context, minor inconsistencies (e.g., missing GPA/honors).
+SECOND CERTIFICATION:
+Title: [Exact certification name from CV]
+Issuer: [Exact organization name from CV] - Industry Standing: [Recognition level]
+Date Earned: [Exact date or "Not specified in CV"]
+Credential ID: [Exact number or "Not specified in CV"]
+Validity Period: [Expiration date or "Not specified in CV"]
+Renewal Requirements: [Maintenance needs or "Not specified in CV"]
+Professional Relevance: [Direct/indirect relationship to career goals]
+Work Application Evidence: [How certification appears in experience]
+Missing Certification Details: [Specific gaps]
 
-===========================
-OUTPUT FORMAT (USE EXACTLY)
-===========================
-CV GAP ANALYSIS REPORT
+[If additional certifications exist, write complete analysis for each]
 
-Candidate: [Name if available]
+4. COMPLETE SKILLS ANALYSIS
 
-1. CONTACT INFORMATION
-- Extract and display exactly as written in CV:
-  • Full Name
-  • Email address(es)
-  • Phone number(s)
-  • LinkedIn profile link(s)
-  • Portfolio / GitHub / personal website links
-  • Physical address or location (if listed)
-- For each item: include one evidence snippet in quotes from the CV.
-- If an item is not present, write explicitly: "Not stated in CV".
-- Gaps Identified: List missing items (e.g., "Phone number not stated in CV"). Do not write "None" unless every field above is provided and confirmed with evidence.
+FIRST SKILL CATEGORY: [Extract exact category name from CV]
 
+INDIVIDUAL SKILL 1: [First skill in category]
+CV Location: [Where mentioned] Quote: "[Exact text]"
+Work Evidence Role 1: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 2: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 3: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 4: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 5: [Specific demonstration or "Not demonstrated"]
+Project Evidence: [Specific projects using this skill or "Not demonstrated"]
+Educational Foundation: [Academic support or "Not established"]
+Proficiency Level: [Any level claimed or "Not specified in CV"]
+Application Context: [How skill is used or "Not specified in CV"]
+Evidence Strength: [Strong/Moderate/Weak/None with reasoning]
 
-2. SUMMARY
-- Overall assessment: [Well quantified / Partially quantified / Vague / Missing critical details]
-- Strengths: [bullet list]
-- Weaknesses: [bullet list]
+INDIVIDUAL SKILL 2: [Second skill in category]
+CV Location: [Where mentioned] Quote: "[Exact text]"
+Work Evidence Role 1: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 2: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 3: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 4: [Specific demonstration or "Not demonstrated"]
+Work Evidence Role 5: [Specific demonstration or "Not demonstrated"]
+Project Evidence: [Specific projects using this skill or "Not demonstrated"]
+Educational Foundation: [Academic support or "Not established"]
+Proficiency Level: [Any level claimed or "Not specified in CV"]
+Application Context: [How skill is used or "Not specified in CV"]
+Evidence Strength: [Strong/Moderate/Weak/None with reasoning]
 
-3. EDUCATION
-- Degrees:
-  - [Institution] — [Degree] — [Major/Specialization] — [Grad date]. Evidence: “[quote]”
-  - [...]
-- Gaps Identified: [GPA, honors, thesis, specialization, dates, etc.]
+[Continue this format for EVERY skill in the first category]
 
-4. CERTIFICATIONS
-- [Title] — [Issuer] — [Year] — [Credential ID or “Not stated in CV”] — Status: [Active/Expired/Not stated]. Evidence: “[quote]”
-- [...]
-- Gaps Identified: [expired/missing/irrelevant or “None”]
+SECOND SKILL CATEGORY: [Extract exact category name from CV]
 
-5. WORK EXPERIENCE (analyze each role separately)
-- Company: [name | location | industry | model | size or “Not stated in CV”]
-- Title: [exact]
-- Dates: [start – end]
-- Responsibilities (verbatim bullets): [list] Evidence: “[quote]”
-- Expected vs. actual: [comparison]
-- Quantitative metrics present: [list]
-- Quantitative metrics missing: [list]
-- Functional gaps: [list]
-- Timeline check: [consistent / overlap / gap]
-- Projects under this role: [List each project and say “See Projects Audit section for per-project details”]
+INDIVIDUAL SKILL 1: [First skill in second category]
+[Complete full analysis following same detailed format]
 
-6. PROJECTS (STRICT, ONE SUB-BLOCK PER PROJECT)
-- Project: [exact name]
-  - Scope: [text] Evidence: “[quote]”
-  - Technologies: [list or “Not stated in CV”]
-  - Outcomes/Metrics PRESENT: [list or “None”]
-  - Missing quantitative details: [explicit list]
-  - Alignment to skills/role: [mapped or “Not demonstrated in CV”]
-  - Questions to ask: [3–6 tailored questions]
-- [Repeat for EVERY project found]
+INDIVIDUAL SKILL 2: [Second skill in second category]
+[Complete full analysis following same detailed format]
 
-7. SKILLS
-- Skills listed (verbatim): [complete list]
-- Evidence mapping matrix:
-  - [Skill] → [Role(s)/Project(s)] | Evidence: “[quote]”
-  - [...]
-- Unsupported skills: [list or “None”]
-- Missing industry-standard tools: [list or “None”]
+[Continue for ALL skills in ALL categories with complete individual analysis]
 
-8. OTHER SECTIONS
-- Volunteer/Extracurricular: [Present/Absent]
-- Professional Development: [Present/Absent]
-- Memberships: [Present/Absent]
+5. EMPLOYMENT HISTORY COMPLETE BREAKDOWN
 
-9. DATES & TIMELINE CONSISTENCY
-- Role dates table (normalized):
-  - [Role] — Start: [YYYY-MM/“YYYY” if month missing] — End: [YYYY-MM/Present]
-  - [...]
-- Overlaps detected: [list both roles + exact overlap period or “None”]
-- Gaps detected (>90 days): [list + duration or “None”]
-- Inconsistencies: [list contradictions or “None”]
-- Integrity verdict: [Consistent / Inconsistent] + brief reason
+FIRST POSITION:
+Job Title: [Exact title from CV]
+Company: [Exact company name from CV]
+Industry: [Determined field or "Cannot determine from CV"]
+Employment Dates: [Exact start - end dates from CV]
+Duration: [Calculated length in months/years]
+Location: [Specified location or "Not specified in CV"]
 
-10. SEVERITY SUMMARY
-- Critical Issues: [list]
-- Major Issues: [list]
-- Minor Issues: [list]
+COMPLETE RESPONSIBILITY ANALYSIS:
+Responsibility Statement 1: [Exact text from CV]
+Action Verbs: [Specific leadership/action words used]
+Scope Elements: [Scale/size mentions or "Not specified"]
+Quantitative Data: [Numbers/percentages mentioned or "None stated"]
+Technology References: [Specific tools/systems mentioned]
+Outcome Descriptions: [Results stated or "Not specified"]
+Skills Demonstrated: [Which CV skills this validates]
+Missing Quantification: [Expected metrics absent]
 
-11. RECOMMENDATIONS
-- Clarifications to request (by role/project): [bullets]
-- Quantitative details to add (by role/project): [bullets]
-- Prioritized resolution: [Critical → Major → Minor]
+Responsibility Statement 2: [Exact text from CV]
+Action Verbs: [Specific leadership/action words used]
+Scope Elements: [Scale/size mentions or "Not specified"]
+Quantitative Data: [Numbers/percentages mentioned or "None stated"]
+Technology References: [Specific tools/systems mentioned]
+Outcome Descriptions: [Results stated or "Not specified"]
+Skills Demonstrated: [Which CV skills this validates]
+Missing Quantification: [Expected metrics absent]
 
-End of Report
+[Complete this analysis for EVERY responsibility listed under this position]
 
-===========================
-QUALITY & SANITY CHECKS
-===========================
-- Do not invent data. Use “Not stated in CV” where details are absent.
-- No speculation language (e.g., “likely”, “probably”). Remove all hedging.
-- Ensure the Summary, Projects, and Dates sections are fully aligned (no contradictions).
-- Ensure EVERY project has its own sub-block with tailored missing metrics AND tailored questions.
-- Ensure EVERY certification includes issuer, year, and credential ID if given.
-- Ensure EVERY skill is mapped to evidence or flagged as unsupported.
+Position Quantitative Summary:
+Financial Responsibility: [Budget/revenue data mentioned or "Not specified in CV"]
+Performance Metrics: [Achievement data mentioned or "Not specified in CV"]
+Team/Management Scope: [Team sizes/reporting mentioned or "Not specified in CV"]
+Project Scale: [Project scope indicators or "Not specified in CV"]
+Timeline Data: [Duration/deadline mentions or "Not specified in CV"]
+Quality Indicators: [Accuracy/efficiency data or "Not specified in CV"]
+
+Skills Validation Summary:
+Demonstrated Skills: [List CV skills this position proves]
+Undemonstrated Skills: [List CV skills lacking evidence in this role]
+
+SECOND POSITION:
+Job Title: [Exact title from CV]
+Company: [Exact company name from CV]
+Industry: [Determined field or "Cannot determine from CV"]
+Employment Dates: [Exact start - end dates from CV]
+Duration: [Calculated length in months/years]
+Location: [Specified location or "Not specified in CV"]
+
+[Complete full responsibility analysis for every responsibility in this position]
+[Complete quantitative summary]
+[Complete skills validation summary]
+
+THIRD POSITION:
+[Complete full analysis following same detailed format]
+
+FOURTH POSITION:
+[Complete full analysis following same detailed format]
+
+FIFTH POSITION:
+[Complete full analysis following same detailed format]
+
+6. PROJECT PORTFOLIO COMPLETE EXAMINATION
+
+FIRST PROJECT:
+Project Name: [Exact name from CV]
+Description: [Complete description from CV]
+Business Context: [Industry/client/purpose stated or "Not specified in CV"]
+Timeline: [Project duration/dates mentioned or "Not specified in CV"]
+Team Role: [Position/responsibility stated or "Not specified in CV"]
+Budget/Scale: [Resource scope mentioned or "Not specified in CV"]
+
+Technical Implementation Complete Analysis:
+Technologies Used: [Complete list from CV or "Not specified in CV"]
+Architecture Approach: [Design methodology or "Not specified in CV"]
+System Integration: [Connections described or "Not specified in CV"]
+Performance Requirements: [Speed/scale needs or "Not specified in CV"]
+Security Implementation: [Safety measures or "Not specified in CV"]
+Development Methodology: [Process approach or "Not specified in CV"]
+
+Business Value Complete Analysis:
+Problem Solved: [Issue addressed or "Not specified in CV"]
+User Benefits: [Value delivered or "Not specified in CV"]
+Business Impact: [Organizational effect or "Not specified in CV"]
+Innovation Elements: [Creative aspects or "Not specified in CV"]
+Market Relevance: [Industry significance or "Not specified in CV"]
+
+Quantitative Outcomes Complete Analysis:
+User Adoption: [Usage metrics or "Not specified in CV"]
+Performance Improvements: [Speed/efficiency gains or "Not specified in CV"]
+Cost Impact: [Savings/expense effects or "Not specified in CV"]
+Quality Metrics: [Accuracy/reliability data or "Not specified in CV"]
+Timeline Achievement: [Delivery performance or "Not specified in CV"]
+Scalability Results: [Growth capacity or "Not specified in CV"]
+
+Skills Validation Complete Analysis:
+Technical Skills Proven: [CV skills this project demonstrates]
+Soft Skills Evidenced: [Leadership/communication shown]
+Problem-Solving Demonstrated: [Analytical capabilities shown]
+Innovation Displayed: [Creative thinking evidenced]
+Undemonstrated Claims: [CV skills not supported by this project]
+
+SECOND PROJECT:
+Project Name: [Exact name from CV]
+[Complete full analysis following same comprehensive format]
+
+THIRD PROJECT:
+Project Name: [Exact name from CV]
+[Complete full analysis following same comprehensive format]
+
+[Continue for ALL projects with complete individual analysis]
+
+7. CONTENT ENHANCEMENT ANALYSIS
+
+Quantification Improvement Opportunities:
+Financial Data Gaps: [Specific missing budget/revenue information]
+Performance Metric Gaps: [Specific missing achievement data]
+Scale Indicator Gaps: [Specific missing size/scope information]
+Timeline Data Gaps: [Specific missing duration/deadline information]
+Quality Measure Gaps: [Specific missing accuracy/efficiency data]
+
+Skills Evidence Strengthening Needs:
+Skills Requiring Work Examples: [List with specific evidence gaps]
+Skills Needing Project Demonstration: [List with application gaps]
+Skills Missing Educational Support: [List with foundation gaps]
+
+Professional Presentation Enhancement:
+Responsibility Statement Improvements: [Specific clarity needs]
+Achievement Quantification Additions: [Specific metric opportunities]
+Technical Detail Expansions: [Specific technical depth needs]
+Business Impact Clarifications: [Specific value articulation needs]
+```
+
+## EXECUTION MANDATES
+
+You MUST:
+- Complete every individual skill analysis (no shortcuts)
+- Complete every individual position analysis (all responsibilities)
+- Complete every individual project analysis (full breakdown)
+- Complete every individual certification analysis
+- Write out all analyses in full - no placeholder text
+- Provide specific evidence and gaps for each element
+
+This ensures complete, detailed analysis without any shortcuts or incomplete sections.

@@ -43,12 +43,11 @@ async def review_profile():
 
         # Call OpenAI
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="o1-mini",
             messages=[
                 {"role": "user", "content": combined_input}
             ],
-            temperature=0.3,
-            max_tokens=16000
+            max_completion_tokens=65000
         )
 
         ai_response = response.choices[0].message.content.strip()
