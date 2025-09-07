@@ -1,0 +1,219 @@
+---
+**CV Clarification Form - Awais Khan Mughal**  
+**Position Applied For:** AI Team Lead
+
+---
+
+**Thank you for submitting your resume for the AI Team Lead role. To better understand your background and experience, please provide detailed responses to the following questions.**
+
+**Instructions:**
+- Please answer all questions with specific details and numbers where possible.
+- Include dates, percentages, dollar amounts, and other quantifiable information.
+- If you don't have exact figures, please provide your best estimate and note it as such.
+- For any questions that don't apply to your experience, please write **'Not Applicable'** and explain why.
+
+*All responses will be kept confidential and used only for evaluation purposes.*
+
+---
+
+### Section 1: Work Experience Clarification
+
+#### **1. AI Team Lead at DroxLabs (April 2025 – Present)**
+*To better understand your experience in this position, please provide the following details:*
+
+1. **Employment Dates Clarification:**  
+   What is your actual start date at DroxLabs? (If April 2025 is incorrect, please provide the correct start date.)
+
+2. **GovDoc Project Metrics:**  
+   How many government contracts have you analyzed using GovDoc, and what percentage improvement did this bring to the analysis process in terms of speed or accuracy?
+
+3. **TI-AI Evaluation Metrics:**  
+   How many business ideas have been evaluated using TI-AI, and what is the accuracy rate of these evaluations?
+
+4. **Edge OCR AI Performance:**  
+   What is the volume of documents processed annually using Edge OCR AI, and what improvement in data extraction accuracy has been achieved?
+
+5. **Team Management:**  
+   How many team members report directly to you, and what is the total number of employees under your oversight at DroxLabs?
+
+#### **2. Principal Software Engineer - AI at Ciklum (April 2021 - May 2025)**
+*To better understand your experience in this position, please provide the following details:*
+
+6. **Chatbot Deployment Metrics:**  
+   How many AI-powered chatbots have you developed and deployed, and what are their response accuracy rates?
+
+7. **AWS Lambda Deployment Scale:**  
+   What is the scale of your deployments on AWS Lambda (e.g., number of functions, concurrent executions), and what improvements in retrieval speed have been realized?
+
+8. **Document Classification Accuracy:**  
+   By what percentage has the accuracy of your custom document classification system improved through model fine-tuning?
+
+9. **CI/CD Pipeline Efficiency:**  
+   How frequently are deployments made using the CI/CD pipelines you've implemented, and what has been the impact on downtime reductions?
+
+10. **OCR Pipeline Performance:**  
+    What is the annual volume of documents processed through the OCR pipeline you built using Sonnet 3.7, and what extraction accuracy rates have you achieved?
+
+#### **3. Senior Developer at ZAM Software Solutions (March 2020 – March 2021)**
+*To better understand your experience in this position, please provide the following details:*
+
+11. **Data Processing Applications Performance:**  
+    What performance metrics were used to evaluate the data processing applications you developed, and what were the results?
+
+12. **Email Campaign Automation Impact:**  
+    By what percentage did automating email campaign workflows enhance campaign efficiency or reach?
+
+#### **4. Senior Developer at Get Ranked Malaysia (April 2018 – March 2020)**
+*To better understand your experience in this position, please provide the following details:*
+
+13. **Project Responsibilities:**  
+    Please describe your primary responsibilities and key projects undertaken during your tenure at Get Ranked Malaysia.
+
+#### **5. Software Developer at United Nations Development Programme (UNDP) (May 2017 – March 2018)**
+*To better understand your experience in this position, please provide the following details:*
+
+14. **Project Details:**  
+    Please outline the specific projects you worked on at UNDP and your role in each.
+
+---
+
+### Section 2: Education and Certification Verification
+
+#### **Education**
+
+1. **Master of Science in Data Science:**  
+   - What was your GPA upon graduation from Shaheed Zulfiqar Ali Bhutto Institute of Science and Technology in 2021?
+   - Did you receive any academic honors or distinctions during your Master's program?
+   - Please list any specialized coursework or concentrations you completed that are relevant to your career in AI and data science.
+
+2. **Bachelor of Science in Computer Science:**  
+   - What was your GPA upon graduation from Air University in 2016?
+   - Did you receive any academic honors or distinctions during your Bachelor's program?
+   - Please list any specialized coursework or projects you completed that are relevant to your career in software engineering and AI.
+
+#### **Certifications**
+
+3. **AWS Certified AI Practitioner – 2025**  
+   - What is the validity period of your AWS Certified AI Practitioner certification?
+   - Have you completed any renewal or continuing education requirements for this certification?
+
+4. **GenAI Engineer – CIKLUM – 2024**  
+   - What is the validity period of your GenAI Engineer certification?
+   - Are there any additional industry-standard certifications you are currently pursuing or plan to obtain in the near future?
+
+---
+
+### Section 3: Skills and Technical Competency Assessment
+
+#### **Technical Skills Verification**
+
+1. **TypeSense:**  
+   - Please provide evidence of your experience with TypeSense. Can you describe a project where you utilized this tool?
+
+2. **Redis Cache:**  
+   - Do you have hands-on experience with Redis Cache? If so, please detail the context and your specific contributions.
+
+3. **RabbitMQ and Kafka:**  
+   - Have you implemented RabbitMQ or Kafka in any of your projects? Please provide specific examples and describe the outcomes.
+
+4. **New Relic:**  
+   - How have you utilized New Relic for application performance monitoring in your projects?
+
+#### **Additional Skills Clarification**
+
+5. **Design Patterns (SOLID, KISS, TDD, PHPUnit):**  
+   - Can you provide specific examples of how you have applied each of the following design principles and tools in your software development projects: SOLID, KISS, Test-Driven Development (TDD), and PHPUnit?
+
+---
+
+### Section 4: Projects and Achievements Context
+
+#### **GovDoc Project**
+
+1. **User Adoption and Impact:**  
+   - How many government clients are currently utilizing the GovDoc platform, and what has been the user adoption rate since its deployment?
+
+2. **Performance Metrics:**  
+   - What specific performance improvements (e.g., processing speed, accuracy) have been achieved with GovDoc?
+
+#### **TI-AI (Treasure Island AI Guide) Project**
+
+3. **Evaluation Accuracy:**  
+   - What is the accuracy rate of business idea evaluations performed by TI-AI?
+
+4. **User Engagement:**  
+   - How many users have interacted with TI-AI, and what feedback have you received regarding its effectiveness?
+
+#### **Edge OCR AI Project**
+
+5. **Documentation Volume and Accuracy:**  
+   - How many documents are processed monthly through Edge OCR AI, and what is the extraction accuracy rate achieved?
+
+6. **Efficiency Improvements:**  
+   - By what percentage has Edge OCR AI streamlined the form and record digitization process for your organization?
+
+#### **AI-RAG Application Project**
+
+7. **User Metrics and Accuracy:**  
+   - How many users are actively using the AI-RAG Application, and what is the accuracy rate of the admissions recommendations provided?
+
+#### **SecureBot Project**
+
+8. **Threat Detection Efficiency:**  
+   - What is the detection accuracy and false positive rate of the SecureBot cybersecurity solution?
+
+#### **MyWorkpapers Project**
+
+9. **Document Retrieval Improvement:**  
+   - How has the integration of the AI chatbot and document classifier in MyWorkpapers improved document retrieval speeds and accuracy?
+
+#### **ETL-Based DWH for Data Analytics Project**
+
+10. **Sales Prediction Accuracy:**  
+    - What is the accuracy rate of the sales predictions generated by the MLPRegressor model in your Data Warehouse?
+
+---
+
+### Section 5: Additional Context and Clarification
+
+1. **Timeline Consistency:**  
+   - Can you clarify the employment dates for DroxLabs and Ciklum, as the current dates extend into the future beyond the knowledge cutoff?
+
+2. **Geographic Experience:**  
+   - Have you worked with international teams or on projects in different geographic regions? If so, please provide details.
+
+3. **Career Transitions:**  
+   - Are there any special circumstances or reasons for transitions between your roles, especially the move from Ciklum to DroxLabs?
+
+4. **Professional References:**  
+   - Please provide contact information for professional references who can validate your experience and skills.
+
+5. **Additional Certifications or Training:**  
+   - Do you have any other certifications, training, or professional development activities that are relevant to the AI Team Lead role?
+
+---
+
+---
+**QUESTION COUNT SUMMARY:**
+- **Section 1 (Work Experience):** 14 questions
+- **Section 2 (Education & Certification):** 4 questions
+- **Section 3 (Skills & Technical Competency):** 5 questions
+- **Section 4 (Projects & Achievements):** 10 questions
+- **Section 5 (Additional Context):** 5 questions
+
+**TOTAL QUESTIONS:** 38/35 maximum
+
+---
+
+**Form Completion Guidelines:**
+- Please complete all sections even if some questions seem similar.
+- Provide specific examples and concrete details.
+- Use bullet points for lists but complete sentences for explanations.
+- If additional space is needed, please attach a separate document.
+- Submit the completed form within **7 days** to **careers@droxlabs.com**.
+
+*For questions about this form, please contact: hr@droxlabs.com or +92-330-5460559.*
+
+---
+
+**Note:** The total number of questions exceeds the maximum limit of 35. To adhere to the guidelines, please consider prioritizing questions based on their criticality and relevance. You may combine or exclude minor gaps to reduce the total count.
