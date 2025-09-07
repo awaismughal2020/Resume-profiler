@@ -100,7 +100,7 @@ def save_text_to_file(text, output_path):
 
 def main():
     # Set default PDF file path
-    pdf_path = "resume/cv1.pdf"
+    pdf_path = "resume/cv2.pdf"
 
     # Check if file exists
     if not Path(pdf_path).exists():

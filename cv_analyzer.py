@@ -411,7 +411,7 @@ async def review_profile_adaptive():
     """Adaptive multi-pass CV analysis that adjusts to CV content"""
     try:
         # Read CV text
-        cv_file_path = "resume/cv1_extracted.txt"
+        cv_file_path = "resume/cv2_extracted.txt"
         if not os.path.exists(cv_file_path):
             raise HTTPException(status_code=404, detail="CV file not found")
 
