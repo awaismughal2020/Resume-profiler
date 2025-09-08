@@ -1,15 +1,11 @@
-version: '3.8'
-
 services:
-  cv-analysis-suite:
+  cv-analyzer:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: cv-analysis-suite
+      dockerfile: Dockerfile.streamlit1
+    container_name: cv-analyzer-app
     ports:
-      - "8501:8501"  # CV Analyzer
-      - "8502:8502"  # CV Enhancement  
-      - "8503:8503"  # Main Dashboard
+      - "8501:8501"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - CV_ANALYZER_PASSWORD=${CV_ANALYZER_PASSWORD:-Abc123!@#7}
@@ -18,11 +14,57 @@ services:
       - ./data:/app/data
       - ./prompts:/app/prompts
       - ./resume:/app/resume
-      - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8503/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8501/_stcore/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 40s
+    networks:
+      - streamlit-network
+
+  cv-enhancement:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit2
+    container_name: cv-enhancement-app
+    ports:
+      - "8502:8502"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CV_ANALYZER_PASSWORD=${CV_ANALYZER_PASSWORD:-Abc123!@#7}
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+      - ./prompts:/app/prompts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8501/_stcore/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - streamlit-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: streamlit-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - cv-analyzer
+      - cv-enhancement
+    restart: unless-stopped
+    networks:
+      - streamlit-network
+
+networks:
+  streamlit-network:
+    driver: bridge
+
+volumes:
+  shared-data:
