@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: resume-profiler
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: CV_ANALYZER_PASSWORD
+        sync: false
+      - key: PYTHONPATH
+        value: /app
+    disk:
+      name: cv-data
+      mountPath: /app/data
+      sizeGB: 1
+      
