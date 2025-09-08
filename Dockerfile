@@ -1,4 +1,4 @@
-# Use Python 3.11 slim image as base
+# Single Dockerfile for both Streamlit apps
 FROM python:3.11-slim
 
 # Set working directory
@@ -13,32 +13,36 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
+    supervisor \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements and install Python dependencies
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY . .
+# Copy application files
+COPY streamlit_app.py ./apps/
+COPY streamlit_app2.py ./apps/
+COPY main_app.py .
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY .env* ./
 
 # Create necessary directories
-RUN mkdir -p data prompts
+RUN mkdir -p data prompts resume logs
 
 # Create a non-root user for security
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-# Expose port
-EXPOSE 8000
+# Expose ports
+EXPOSE 8501 8502 8503
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:8503/health || exit 1
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start supervisor to manage multiple processes
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

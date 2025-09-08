@@ -17,10 +17,15 @@ DATA_DIR = "data"
 PROMPT_DIR = "prompts"
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(PROMPT_DIR, exist_ok=True)
+GENERATE_QUESTIONS_PROMPT_FILE = os.path.join(PROMPT_DIR, "generate_questions_prompt.txt")
 
 
 class CVAnalyzer:
     def __init__(self):
+
+        with open(GENERATE_QUESTIONS_PROMPT_FILE, "r", encoding='utf-8') as f:
+            questions_prompt = f.read()
+
         self.prompt_templates = {
             'skills_analysis': """
 # Skills Comprehensive Analysis
@@ -285,7 +290,9 @@ Final Professional Assessment:
 - Competitive Positioning: [Market competitiveness evaluation]
 - Success Implementation Plan: [Next steps for improvement]
 ```
-"""
+""",
+
+            'questions_prompt': questions_prompt
         }
 
     def detect_cv_structure(self, cv_text):
@@ -400,6 +407,38 @@ Analysis Passes Completed: {len(analyses)}
             "================================================================================\nEND OF COMPREHENSIVE ANALYSIS\n================================================================================")
 
         return '\n'.join(report_sections)
+
+    def generate_questions(self, cv_path, analysis_path, session_id):
+        with open(cv_path, "r", encoding='utf-8') as f:
+            cv_text = f.read().strip()
+
+        with open(analysis_path, "r", encoding='utf-8') as f:
+            analysis_text = f.read()
+
+        combined_input = f"{self.prompt_templates['questions_prompt']}\n\nCV CONTENT:\n{cv_text}\n\nCV REVIEW:\n{analysis_text}"
+
+        response = client.chat.completions.create(
+            model="o1-mini",
+            messages=[
+                {"role": "user", "content": combined_input}
+            ],
+            max_completion_tokens=65000
+        )
+
+        ai_response = response.choices[0].message.content.strip()
+
+        # Save response to questions.txt
+        questions_file_path = os.path.join(DATA_DIR, f"{session_id}_questions.txt")
+
+        with open(questions_file_path, "w", encoding='utf-8') as f:
+            f.write(ai_response)
+
+        # Return response
+        return JSONResponse(content={
+            "response": ai_response,
+            "response_file": f"{session_id}_questions.txt",
+            "success": True
+        })
 
 
 # Initialize analyzer

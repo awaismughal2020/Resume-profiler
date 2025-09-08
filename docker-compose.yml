@@ -1,23 +1,28 @@
+version: '3.8'
+
 services:
-  resume-review-api:
+  cv-analysis-suite:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: resume-review-service
+    container_name: cv-analysis-suite
     ports:
-      - "8000:8000"
+      - "8501:8501"  # CV Analyzer
+      - "8502:8502"  # CV Enhancement  
+      - "8503:8503"  # Main Dashboard
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CV_ANALYZER_PASSWORD=${CV_ANALYZER_PASSWORD:-Abc123!@#7}
       - PYTHONPATH=/app
     volumes:
-      # Mount data directory for persistence
       - ./data:/app/data
-      # Mount prompts directory
       - ./prompts:/app/prompts
+      - ./resume:/app/resume
+      - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8503/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
