@@ -79,13 +79,16 @@ def get_app_from_url():
             elif app in ["cv-enhancement", "enhancement"]:
                 return "enhancement"
 
-        # Check if URL contains specific paths
-        if hasattr(st, '_get_session_state'):
-            # This is a hack to get the current URL, but Streamlit doesn't expose this easily
-            pass
+        # Check for page parameter (alternative routing)
+        if "page" in query_params:
+            page = query_params["page"][0]
+            if page in ["analyzer", "cv-analyzer"]:
+                return "analyzer"
+            elif page in ["enhancement", "cv-enhancement"]:
+                return "enhancement"
 
-        # Default based on URL structure you mentioned
-        return "dashboard"  # Default to dashboard
+        # Default to dashboard
+        return "dashboard"
     except:
         return "dashboard"
 
