@@ -640,7 +640,7 @@ def main():
                 # Preview extracted text
                 with st.expander("Preview Extracted Text"):
                     st.text_area("CV Content",
-                                 value=cleaned_text[:2000] + "..." if len(cleaned_text) > 2000 else cleaned_text,
+                                 value=cleaned_text,
                                  height=300)
             else:
                 st.error("Failed to extract text from PDF")
