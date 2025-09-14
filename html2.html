@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Enhancement - Q&A Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #ffffff;
+            color: #262730;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 400px;
+        }
+
+        .login-card h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .main-app {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f2f6;
+        }
+
+        .header h1 {
+            color: #262730;
+            margin-bottom: 10px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 320px;
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #e6e9ef;
+        }
+
+        .main-content {
+            margin-left: 340px;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            color: #262730;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #262730;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff4b4b;
+            box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #ff4b4b;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #ff2b2b;
+        }
+
+        .btn-secondary {
+            background-color: #f0f2f6;
+            color: #262730;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #e6e9ef;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .column {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            color: #262730;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f6;
+        }
+
+        .text-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .text-area-large {
+            min-height: 300px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .alert-success {
+            background-color: #d1fadf;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+
+        .alert-warning {
+            background-color: #fef5e7;
+            border: 1px solid #f6d55c;
+            color: #744210;
+        }
+
+        .alert-error {
+            background-color: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #742a2a;
+        }
+
+        .alert-info {
+            background-color: #bee3f8;
+            border: 1px solid #63b3ed;
+            color: #2a4365;
+        }
+
+        .questions-form {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e6e9ef;
+            border-radius: 8px;
+            background-color: #fafbfc;
+        }
+
+        .question-text {
+            font-weight: 500;
+            color: #262730;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .answer-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        .answer-textarea:focus {
+            outline: none;
+            border-color: #ff4b4b;
+            box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
+        }
+
+        .question-divider {
+            border: none;
+            border-top: 2px solid #e6e9ef;
+            margin: 15px 0;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4b4b;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .results-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff4b4b;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-section {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading-text {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .question-counter {
+            background: #ff4b4b;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .optional-note {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .session-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .columns {
+                grid-template-columns: 1fr;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h1>Resume Analyzer</h1>
+            <div class="form-group">
+                <input type="password" id="passwordInput" class="form-control" placeholder="Enter password">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkPassword()">Login</button>
+            <div id="loginError" class="alert alert-error hidden">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app" id="mainApp">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Configuration</h2>
+            <div class="form-group">
+                <label for="apiKey">OpenAI API Key</label>
+                <input type="password" id="apiKey" class="form-control" placeholder="Enter your OpenAI API key">
+            </div>
+            <div class="form-group">
+                <label for="gptModel">GPT Model</label>
+                <select id="gptModel" class="form-control">
+                    <option value="o1-mini">o1-mini</option>
+                    <option value="gpt-4">gpt-4</option>
+                    <option value="gpt-4-turbo">gpt-4-turbo</option>
+                    <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                </select>
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>Session Info</h2>
+            <div class="session-info">
+                <strong>Session ID:</strong> <span id="sessionId"></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-secondary" onclick="startNewSession()" style="width: 100%;">
+                    Start New Session
+                </button>
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>Generate Resume Prompt</h2>
+            <div class="form-group">
+                <textarea id="generateResumePrompt" class="text-area" placeholder="Customize the resume generation prompt..."></textarea>
+            </div>
+            <button class="btn btn-secondary" onclick="savePrompt()" style="width: 100%;">
+                Save Prompt
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>CV Enhancement - Question & Answer Interface</h1>
+            </div>
+
+            <!-- Input Data Section -->
+            <div class="columns">
+                <!-- Input Column -->
+                <div class="column">
+                    <h2 class="section-header">Input Data</h2>
+
+                    <div class="input-section">
+                        <h3>Generated Questions</h3>
+                        <textarea id="questionsInput" class="text-area text-area-large"
+                            placeholder="Paste the generated questions here..."></textarea>
+                    </div>
+
+                    <div class="input-section">
+                        <h3>Original CV Text</h3>
+                        <textarea id="cvText" class="text-area"
+                            placeholder="Paste the extracted CV text here..."></textarea>
+                    </div>
+
+                    <div class="input-section">
+                        <h3>CV Analysis</h3>
+                        <textarea id="analysisText" class="text-area"
+                            placeholder="Paste the comprehensive analysis text here..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Questions Form Column -->
+                <div class="column">
+                    <h2 class="section-header">Question-Answer Form</h2>
+                    <div id="questionsFormContent">
+                        <div class="alert alert-info">
+                            Please paste the generated questions in the left panel to begin.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Resume Results -->
+            <div id="resultsSection" class="hidden">
+                <div class="results-section">
+                    <h2 class="section-header">Enhanced Resume</h2>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value" id="questionsAnswered">0/0</div>
+                            <div class="metric-label">Questions Answered</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="currentSessionId">-</div>
+                            <div class="metric-label">Session ID</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="modelUsed">-</div>
+                            <div class="metric-label">Model Used</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="resumeCharacters">0</div>
+                            <div class="metric-label">Characters</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Generated Enhanced Resume:</label>
+                        <textarea id="enhancedResumeDisplay" class="text-area"
+                            style="min-height: 600px;" readonly></textarea>
+                    </div>
+
+                    <div class="download-buttons">
+                        <button class="btn btn-primary" onclick="downloadResume()">
+                            Download Enhanced Resume
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadQAData()">
+                            Download Q&A Data (JSON)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentSession = generateSessionId();
+        let parsedQuestions = [];
+        let qaAnswers = {};
+        let enhancedResumeData = null;
+
+        // Default resume generation prompt
+        const defaultResumePrompt = `# Enhanced Resume Generation
+Based on the comprehensive CV analysis and detailed question-answer responses, generate an improved, professional resume that addresses gaps and strengthens weak areas.
+
+## Requirements:
+- Use the original CV as the foundation
+- Incorporate insights from the comprehensive analysis
+- Integrate specific details from question-answer responses
+- Address identified gaps and weaknesses
+- Enhance quantification and impact statements
+- Maintain professional formatting and structure
+- Ensure consistency across all sections
+
+## Output Format:
+Generate a complete, professional resume with:
+
+**CONTACT INFORMATION**
+[Enhanced contact details with professional summary]
+
+**PROFESSIONAL SUMMARY**
+[3-4 lines highlighting key strengths, experience level, and value proposition based on analysis and Q&A responses]
+
+**CORE COMPETENCIES**
+[Enhanced skills section with evidence-based categorization and proficiency levels]
+
+**PROFESSIONAL EXPERIENCE**
+[For each position, include:]
+- Enhanced job titles and company descriptions
+- Quantified achievements and responsibilities with specific metrics from Q&A
+- Impact statements with measurable outcomes
+- Technology stack and methodologies used
+- Leadership and collaboration examples
+
+**KEY PROJECTS & ACHIEVEMENTS**
+[Enhanced project descriptions with:]
+- Specific technologies and approaches used
+- Quantified outcomes and business impact from Q&A responses
+- Team size and role clarification
+- Technical challenges overcome
+- Performance metrics and results
+
+**EDUCATION & CERTIFICATIONS**
+[Enhanced education section with:]
+- Academic achievements and honors from Q&A
+- Relevant coursework and research
+- Professional certifications with validity dates
+- Continuing education and professional development
+
+**TECHNICAL SKILLS**
+[Categorized by proficiency level based on Q&A responses:]
+- Expert Level: [Skills with 5+ years experience]
+- Advanced Level: [Skills with 3-5 years experience]
+- Intermediate Level: [Skills with 1-3 years experience]
+
+Generate a polished, ATS-friendly resume that positions the candidate competitively while maintaining authenticity and addressing all identified gaps.`;
+
+        // Initialize application
+        function initializeApp() {
+            document.getElementById('sessionId').textContent = currentSession;
+            document.getElementById('generateResumePrompt').value = defaultResumePrompt;
+
+            // Set up event listeners
+            document.getElementById('questionsInput').addEventListener('input', parseQuestions);
+            document.getElementById('apiKey').addEventListener('input', checkInputs);
+        }
+
+        // Generate session ID
+        function generateSessionId() {
+            return Math.random().toString(36).substr(2, 8);
+        }
+
+        // Password check function
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'Abc123!@#7'; // In real app, this would be environment variable
+
+            if (password === correctPassword) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                initializeApp();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        // Parse questions from input text
+        function parseQuestions() {
+            const questionsText = document.getElementById('questionsInput').value;
+            if (!questionsText.trim()) {
+                document.getElementById('questionsFormContent').innerHTML =
+                    '<div class="alert alert-info">Please paste the generated questions in the left panel to begin.</div>';
+                return;
+            }
+
+            const questions = [];
+            const lines = questionsText.split('\n');
+            let currentQuestion = "";
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                // Look for questions with question# prefix
+                if (line.startsWith('question#')) {
+                    if (currentQuestion) {
+                        questions.push(currentQuestion.trim());
+                    }
+                    currentQuestion = line.replace('question#', '').trim();
+                } else if (currentQuestion && !line.startsWith('#') && !line.startsWith('**') && !line.startsWith('-')) {
+                    // Continue building the current question
+                    currentQuestion += " " + line;
+                } else if (line.includes('?') && line.length > 30 && !line.startsWith('**') && !line.startsWith('#')) {
+                    // Standalone question
+                    const cleanedLine = line.replace('question#', '').trim();
+                    if (cleanedLine) {
+                        questions.push(cleanedLine);
+                    }
+                }
+            }
+
+            // Add the last question
+            if (currentQuestion) {
+                questions.push(currentQuestion.trim());
+            }
+
+            // Clean up questions
+            const cleanedQuestions = [];
+            for (let q of questions) {
+                // Remove numbering and clean up
+                q = q.replace(/^\d+\.\s*/, '');
+                q = q.replace(/\*\*/g, '').trim();
+                if (q.length > 20 && q.includes('?')) {
+                    cleanedQuestions.push(q);
+                }
+            }
+
+            parsedQuestions = cleanedQuestions;
+            displayQuestionsForm();
+        }
+
+        // Display questions form
+        function displayQuestionsForm() {
+            if (parsedQuestions.length === 0) {
+                document.getElementById('questionsFormContent').innerHTML =
+                    '<div class="alert alert-warning">No questions found. Please check the input format.</div>';
+                return;
+            }
+
+            const formHtml = `
+                <div class="alert alert-success">
+                    Found ${parsedQuestions.length} questions to answer
+                </div>
+                <div class="questions-form" id="questionsForm">
+                    ${parsedQuestions.map((question, index) => `
+                        <div class="question-item">
+                            <div class="question-text">
+                                <span class="question-counter">${index + 1}</span>
+                                ${question}
+                            </div>
+                            <textarea id="answer_${index}" class="answer-textarea"
+                                placeholder="Provide detailed answer with specific numbers, dates, and examples... (Optional - can be left empty)"></textarea>
+                            <div class="optional-note">Optional - can be left empty</div>
+                            ${index < parsedQuestions.length - 1 ? '<hr class="question-divider">' : ''}
+                        </div>
+                    `).join('')}
+
+                    <div style="margin-top: 30px; text-align: center;">
+                        <button class="btn btn-primary" onclick="generateEnhancedResume()"
+                            id="generateResumeBtn" style="padding: 15px 30px; font-size: 16px;">
+                            Generate Enhanced Resume
+                        </button>
+                    </div>
+
+                    <div id="generationProgress" class="loading-section">
+                        <div class="spinner"></div>
+                        <div class="loading-text">Generating enhanced resume...</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('questionsFormContent').innerHTML = formHtml;
+            checkInputs();
+        }
+
+        // Check inputs and enable/disable buttons
+        function checkInputs() {
+            const apiKey = document.getElementById('apiKey').value;
+            const cvText = document.getElementById('cvText').value;
+            const analysisText = document.getElementById('analysisText').value;
+            const generateResumePrompt = document.getElementById('generateResumePrompt').value;
+            const generateBtn = document.getElementById('generateResumeBtn');
+
+            if (generateBtn) {
+                if (apiKey && cvText && analysisText && generateResumePrompt && parsedQuestions.length > 0) {
+                    generateBtn.disabled = false;
+                } else {
+                    generateBtn.disabled = true;
+                }
+            }
+        }
+
+        // Generate enhanced resume
+        async function generateEnhancedResume() {
+            // Validate inputs
+            const apiKey = document.getElementById('apiKey').value;
+            const cvText = document.getElementById('cvText').value;
+            const analysisText = document.getElementById('analysisText').value;
+            const generateResumePrompt = document.getElementById('generateResumePrompt').value;
+
+            if (!apiKey) {
+                showAlert('Please provide OpenAI API key', 'error');
+                return;
+            }
+            if (!cvText) {
+                showAlert('Please provide original CV text', 'error');
+                return;
+            }
+            if (!analysisText) {
+                showAlert('Please provide CV analysis', 'error');
+                return;
+            }
+            if (!generateResumePrompt) {
+                showAlert('Please provide generate resume prompt', 'error');
+                return;
+            }
+
+            // Collect answers
+            qaAnswers = {};
+            let answeredCount = 0;
+            parsedQuestions.forEach((question, index) => {
+                const answer = document.getElementById(`answer_${index}`).value.trim();
+                qaAnswers[question] = answer;
+                if (answer) answeredCount++;
+            });
+
+            // Show progress
+            document.getElementById('generationProgress').style.display = 'block';
+            document.getElementById('generateResumeBtn').disabled = true;
+
+            // Simulate API call (in real app, would make actual OpenAI API call)
+            setTimeout(() => {
+                completeResumeGeneration(answeredCount);
+            }, 3000);
+        }
+
+        // Complete resume generation
+        function completeResumeGeneration(answeredCount) {
+            // Hide progress
+            document.getElementById('generationProgress').style.display = 'none';
+            document.getElementById('generateResumeBtn').disabled = false;
+
+            // Generate mock enhanced resume
+            const mockEnhancedResume = generateMockEnhancedResume();
+
+            enhancedResumeData = {
+                session_id: currentSession,
+                questions: Object.entries(qaAnswers).map(([question, answer]) => ({
+                    question,
+                    answer
+                })),
+                enhanced_resume: mockEnhancedResume,
+                model_used: document.getElementById('gptModel').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Show results
+            document.getElementById('resultsSection').classList.remove('hidden');
+
+            // Update metrics
+            document.getElementById('questionsAnswered').textContent = `${answeredCount}/${parsedQuestions.length}`;
+            document.getElementById('currentSessionId').textContent = currentSession;
+            document.getElementById('modelUsed').textContent = document.getElementById('gptModel').value;
+            document.getElementById('resumeCharacters').textContent = mockEnhancedResume.length;
+
+            // Display resume
+            document.getElementById('enhancedResumeDisplay').value = mockEnhancedResume;
+
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+
+            showAlert('Enhanced resume generated successfully!', 'success');
+        }
+
+        // Generate mock enhanced resume
+        function generateMockEnhancedResume() {
+            return `**JOHN SMITH**
+Senior Software Engineer & AI Team Lead
+Email: john.smith@email.com | Phone: (555) 123-4567
+LinkedIn: linkedin.com/in/johnsmith | GitHub: github.com/johnsmith
+
+**PROFESSIONAL SUMMARY**
+Results-driven Senior Software Engineer with 5+ years of experience leading high-performance development teams and delivering scalable web applications. Proven track record of improving system performance by 40% and successfully managing cross-functional teams of up to 5 developers. Expertise in full-stack development with React, Node.js, and Python, combined with strong leadership skills and a passion for mentoring junior developers.
+
+**CORE COMPETENCIES**
+• Leadership & Team Management: Led teams of 3-5 developers, conducted code reviews, mentored junior staff
+• Full-Stack Development: React.js, Node.js, Python, Django, JavaScript ES6+
+• Database Technologies: PostgreSQL, MongoDB, MySQL - designed schemas for applications handling 100K+ users
+• Cloud & DevOps: AWS (EC2, S3, RDS, Lambda), Docker, CI/CD pipelines, automated deployment
+• Performance Optimization: Reduced load times by 40%, implemented caching strategies, database indexing
+• Project Management: Agile/Scrum methodologies, sprint planning, cross-functional collaboration
+
+**PROFESSIONAL EXPERIENCE**
+
+**Senior Software Engineer & Team Lead** | TechCorp | 2021-Present
+• Lead a high-performing team of 3 developers in designing and implementing scalable web applications using React and Node.js
+• Architected and delivered 5 major product features serving 50,000+ active users monthly
+• Improved overall system performance by 40% through database optimization and implementation of Redis caching
+• Established code review processes and best practices, reducing bug reports by 35%
+• Collaborated with product managers and designers to translate business requirements into technical specifications
+• Technologies: React.js, Node.js, PostgreSQL, AWS, Docker, Jest
+
+**Software Engineer** | StartupXYZ | 2019-2021
+• Developed robust REST APIs using Python Django framework serving 10,000+ daily active users
+• Designed and implemented PostgreSQL database schemas supporting multi-tenant architecture
+• Built responsive frontend components using React.js, improving user engagement by 25%
+• Participated in agile development cycles with 2-week sprints and daily standups
+• Collaborated with 5-person cross-functional team including designers and product managers
+• Technologies: Python, Django, PostgreSQL, React.js, HTML/CSS, Git
+
+**KEY PROJECTS & ACHIEVEMENTS**
+
+**E-commerce Platform** | Personal Project | 2020
+• Architected and developed full-stack e-commerce solution using MERN stack (MongoDB, Express, React, Node.js)
+• Implemented secure payment processing integration with Stripe API handling $10K+ in transactions
+• Built responsive design supporting mobile and desktop users with 99.9% uptime
+• Deployed scalable infrastructure on AWS supporting 1,000+ concurrent users
+• Features: User authentication, product catalog, shopping cart, order management, admin dashboard
+• Technologies: MongoDB, Express.js, React.js, Node.js, AWS, Stripe API
+
+**Performance Monitoring Dashboard** | TechCorp | 2022
+• Designed real-time analytics dashboard providing insights into application performance metrics
+• Integrated with multiple data sources and APIs to display KPIs for C-level executives
+• Reduced system monitoring time by 60% through automated alert systems
+• Technologies: React.js, D3.js, Node.js, WebSocket, PostgreSQL
+
+**EDUCATION & CERTIFICATIONS**
+
+**Bachelor of Science in Computer Science** | University of Technology | 2019
+• Magna Cum Laude (GPA: 3.7/4.0)
+• Relevant Coursework: Data Structures, Algorithms, Database Systems, Software Engineering
+• Senior Project: Machine Learning Application for Predictive Analytics
+
+**Professional Certifications:**
+• AWS Certified Solutions Architect - Associate (2022)
+• MongoDB Certified Developer (2021)
+• Certified Scrum Master (CSM) (2023)
+
+**TECHNICAL SKILLS**
+
+**Expert Level (5+ years):**
+JavaScript, HTML/CSS, React.js, Node.js, Git, Agile Methodologies
+
+**Advanced Level (3-5 years):**
+Python, Django, PostgreSQL, MongoDB, AWS, Docker, REST APIs
+
+**Intermediate Level (1-3 years):**
+Redis, TypeScript, GraphQL, Jenkins, Kubernetes, Machine Learning
+
+**ADDITIONAL ACHIEVEMENTS**
+• Mentored 6 junior developers, with 4 receiving promotions within 18 months
+• Speaker at TechCorp Engineering Summit 2023: "Building Scalable React Applications"
+• Contributor to open-source projects with 500+ GitHub stars
+• Led technical interview process, improving team hiring efficiency by 30%`;
+        }
+
+        // Download functions
+        function downloadResume() {
+            if (enhancedResumeData) {
+                downloadFile(enhancedResumeData.enhanced_resume, `enhanced_resume_${currentSession}.txt`);
+            }
+        }
+
+        function downloadQAData() {
+            if (enhancedResumeData) {
+                const jsonData = JSON.stringify(enhancedResumeData, null, 2);
+                downloadFile(jsonData, `qa_data_${currentSession}.json`);
+            }
+        }
+
+        // Utility function to download text as file
+        function downloadFile(content, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Save prompt
+        function savePrompt() {
+            // In a real application, this would save to a server or local storage
+            showAlert('Prompt saved successfully!', 'success');
+        }
+
+        // Start new session
+        function startNewSession() {
+            if (confirm('Are you sure you want to start a new session? This will clear all current data.')) {
+                // Reset all data
+                currentSession = generateSessionId();
+                parsedQuestions = [];
+                qaAnswers = {};
+                enhancedResumeData = null;
+
+                // Update UI
+                document.getElementById('sessionId').textContent = currentSession;
+                document.getElementById('questionsInput').value = '';
+                document.getElementById('cvText').value = '';
+                document.getElementById('analysisText').value = '';
+                document.getElementById('questionsFormContent').innerHTML =
+                    '<div class="alert alert-info">Please paste the generated questions in the left panel to begin.</div>';
+                document.getElementById('resultsSection').classList.add('hidden');
+
+                showAlert('New session started!', 'success');
+            }
+        }
+
+        // Show alert messages
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.maxWidth = '400px';
+
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+
+        // Event listeners
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default values for demo
+            setTimeout(() => {
+                if (document.getElementById('questionsInput')) {
+                    document.getElementById('questionsInput').value = `**CV Clarification Form - John Smith**
+**Position Applied For:** Senior Software Engineer
+
+### Section 1: Work Experience Clarification
+- **Position: Senior Software Engineer at TechCorp (2021 - Present)**
+  - question#For your role as Senior Software Engineer at TechCorp: What is the size of your team, including direct reports and total team members under your leadership?
+  - question#For your role as Senior Software Engineer at TechCorp: You mentioned improving system performance by 40%. Can you provide specific metrics about what was improved and how it was measured?
+
+- **Position: Software Engineer at StartupXYZ (2019-2021)**
+  - question#For your role as Software Engineer at StartupXYZ: How many projects did you work on simultaneously, and what was the typical project duration?
+  - question#For your role as Software Engineer at StartupXYZ: Can you provide specific examples of the REST APIs you built and their usage metrics?
+
+### Section 2: Education and Certification Verification
+- **Bachelor of Science in Computer Science**
+  - question#For your Bachelor of Science in Computer Science from University of Technology, 2019: What was your GPA or degree classification, and did you receive any academic honors or distinctions?
+
+### Section 3: Skills and Technical Competency Assessment
+- **Technical Skills**
+  - question#For the skills listed in your resume: Can you provide specific examples of projects where you used MongoDB, and describe the complexity of the database schemas you designed?
+  - question#For your AWS experience: Which specific AWS services have you worked with, and can you describe a complex deployment you managed?
+
+### Section 4: Projects and Achievements Context
+- **E-commerce Platform**
+  - question#For your E-commerce Platform project: How many concurrent users could the system handle, and what was the total transaction volume processed?
+  - question#For your E-commerce Platform project: Can you describe the specific security measures you implemented beyond Stripe integration?
+
+### Section 5: Additional Context and Clarification
+- question#Can you describe your experience with code reviews and mentoring? How many developers have you mentored and what was your approach?
+- question#What specific agile methodologies have you worked with, and what was your role in sprint planning and execution?`;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
