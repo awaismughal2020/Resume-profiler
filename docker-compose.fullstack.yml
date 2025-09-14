@@ -1,0 +1,42 @@
+# docker-compose.fullstack.yml
+version: '3.8'
+
+services:
+  # Frontend - Nginx serving HTML files
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+      - ./nginx.fullstack.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+  # Backend - Python FastAPI/Flask server with your CVAnalyzer
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CV_ANALYZER_PASSWORD=${CV_ANALYZER_PASSWORD}
+    volumes:
+      - ./data:/app/data
+      - ./prompts:/app/prompts
+      - ./resume:/app/resume
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  default:
+    name: cv-analyzer-fullstack

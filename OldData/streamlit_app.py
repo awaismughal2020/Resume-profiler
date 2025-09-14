@@ -174,7 +174,7 @@ def clean_and_format_text(text):
     return '\n'.join(cleaned_lines)
 # CV Analyzer Class (Based on FastAPI version)
 class CVAnalyzer:
-    def __init__(self, gpt_model="o1-mini", api_key=os.getenv('OPENAI_API_KEY')):
+    def __init__(self, gpt_model="o1-mini", api_key=None):
         self.gpt_model = gpt_model
         self.client = OpenAI(api_key=api_key or os.getenv("OPENAI_API_KEY"))
         # Load questions prompt from file
@@ -579,7 +579,6 @@ Analysis Passes Completed: {len(analyses)}
             }
         except Exception as e:
             raise Exception(f"Error generating questions: {str(e)}")
-
 # Streamlit UI
 def main():
     # Check password before showing the main app
@@ -641,7 +640,7 @@ def main():
                 # Preview extracted text
                 with st.expander("Preview Extracted Text"):
                     st.text_area("CV Content",
-                                 value=cleaned_text[:2000] + "..." if len(cleaned_text) > 2000 else cleaned_text,
+                                 value=cleaned_text,
                                  height=300)
             else:
                 st.error("Failed to extract text from PDF")
