@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Analyzer Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #ffffff;
+            color: #262730;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 400px;
+        }
+
+        .login-card h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .main-app {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f2f6;
+        }
+
+        .header h1 {
+            color: #262730;
+            margin-bottom: 10px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #e6e9ef;
+        }
+
+        .main-content {
+            margin-left: 320px;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            color: #262730;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #262730;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff4b4b;
+            box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #ff4b4b;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #ff2b2b;
+        }
+
+        .btn-secondary {
+            background-color: #f0f2f6;
+            color: #262730;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #e6e9ef;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .column {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            color: #262730;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f6;
+        }
+
+        .tabs {
+            margin-top: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .tab-button.active {
+            background-color: #ff4b4b;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: #ff4b4b;
+            background-color: #fff5f5;
+        }
+
+        .file-upload-area.dragover {
+            border-color: #ff4b4b;
+            background-color: #fff5f5;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #f0f2f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #ff4b4b;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .alert-success {
+            background-color: #d1fadf;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+
+        .alert-warning {
+            background-color: #fef5e7;
+            border: 1px solid #f6d55c;
+            color: #744210;
+        }
+
+        .alert-error {
+            background-color: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #742a2a;
+        }
+
+        .alert-info {
+            background-color: #bee3f8;
+            border: 1px solid #63b3ed;
+            color: #2a4365;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4b4b;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .expandable {
+            margin: 20px 0;
+        }
+
+        .expandable-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expandable-header:hover {
+            background: #e9ecef;
+        }
+
+        .expandable-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #e6e9ef;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .expandable-content.open {
+            display: block;
+        }
+
+        .text-area {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-success {
+            background-color: #48bb78;
+        }
+
+        .status-warning {
+            background-color: #ed8936;
+        }
+
+        .status-error {
+            background-color: #f56565;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .columns {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                flex: none;
+                margin-bottom: 5px;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff4b4b;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h1>Resume Analyzer</h1>
+            <div class="form-group">
+                <input type="password" id="passwordInput" class="form-control" placeholder="Enter password">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkPassword()">Login</button>
+            <div id="loginError" class="alert alert-error hidden">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app" id="mainApp">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Configuration</h2>
+            <div class="form-group">
+                <label for="apiKey">OpenAI API Key</label>
+                <input type="password" id="apiKey" class="form-control" placeholder="Enter your OpenAI API key">
+            </div>
+            <div class="form-group">
+                <label for="gptModel">GPT Model</label>
+                <select id="gptModel" class="form-control">
+                    <option value="o1-mini">o1-mini</option>
+                    <option value="gpt-4">gpt-4</option>
+                    <option value="gpt-4-turbo">gpt-4-turbo</option>
+                    <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                    <option value="o1-preview">o1-preview</option>
+                </select>
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>Analysis Status</h2>
+            <div id="sessionInfo">
+                <div class="alert alert-info">No active session</div>
+            </div>
+
+            <div id="analysisStatus" class="hidden">
+                <div class="status-indicator status-success"></div>
+                <span id="statusText">Ready</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>CV Analyzer Pro</h1>
+            </div>
+
+            <!-- Upload and Analysis Section -->
+            <div class="columns">
+                <!-- Upload Column -->
+                <div class="column">
+                    <h2 class="section-header">Upload CV</h2>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div>
+                            <strong>Choose a PDF file</strong>
+                            <br>
+                            <small>Drag and drop or click to select</small>
+                        </div>
+                        <input type="file" id="pdfFileInput" accept=".pdf" style="display: none;">
+                    </div>
+
+                    <div id="uploadStatus" class="hidden">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="uploadProgress"></div>
+                        </div>
+                        <div id="uploadMessage"></div>
+                    </div>
+
+                    <div id="extractedInfo" class="hidden">
+                        <div class="alert alert-success">
+                            <strong>Text extracted successfully!</strong>
+                            <br>
+                            <span id="extractedDetails"></span>
+                        </div>
+                        <div class="expandable">
+                            <div class="expandable-header" onclick="toggleExpandable('cvPreview')">
+                                <span>Preview Extracted Text</span>
+                                <span>▼</span>
+                            </div>
+                            <div class="expandable-content" id="cvPreview">
+                                <textarea id="cvPreviewText" class="text-area" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prompt Templates Column -->
+                <div class="column">
+                    <h2 class="section-header">Prompt Templates</h2>
+                    <div class="tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="switchTab('skills')">Skills</button>
+                            <button class="tab-button" onclick="switchTab('experience')">Experience</button>
+                            <button class="tab-button" onclick="switchTab('projects')">Projects</button>
+                            <button class="tab-button" onclick="switchTab('education')">Education</button>
+                            <button class="tab-button" onclick="switchTab('integration')">Integration</button>
+                            <button class="tab-button" onclick="switchTab('questions')">Questions</button>
+                        </div>
+
+                        <div class="tab-content active" id="skills-tab">
+                            <h3>Skills Analysis Prompt</h3>
+                            <textarea id="skillsPrompt" class="text-area"></textarea>
+                        </div>
+
+                        <div class="tab-content" id="experience-tab">
+                            <h3>Experience Analysis Prompt</h3>
+                            <textarea id="experiencePrompt" class="text-area"></textarea>
+                        </div>
+
+                        <div class="tab-content" id="projects-tab">
+                            <h3>Projects Analysis Prompt</h3>
+                            <textarea id="projectsPrompt" class="text-area"></textarea>
+                        </div>
+
+                        <div class="tab-content" id="education-tab">
+                            <h3>Education Analysis Prompt</h3>
+                            <textarea id="educationPrompt" class="text-area"></textarea>
+                        </div>
+
+                        <div class="tab-content" id="integration-tab">
+                            <h3>Integration Analysis Prompt</h3>
+                            <textarea id="integrationPrompt" class="text-area"></textarea>
+                        </div>
+
+                        <div class="tab-content" id="questions-tab">
+                            <h3>Interview Questions Generation Prompt</h3>
+                            <textarea id="questionsPrompt" class="text-area"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Controls -->
+            <div class="column">
+                <h2 class="section-header">Run Analysis</h2>
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <button id="analyzeBtn" class="btn btn-primary" onclick="runAnalysis()" disabled>
+                        Analyze CV
+                    </button>
+                    <div id="analysisProgress" class="hidden">
+                        <div class="spinner"></div>
+                        <span id="analysisProgressText">Starting analysis...</span>
+                    </div>
+                </div>
+                <div id="analysisWarnings" class="hidden">
+                    <div class="alert alert-warning">
+                        <ul id="warningsList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden">
+                <div class="column">
+                    <h2 class="section-header">Analysis Results</h2>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value" id="sessionId">-</div>
+                            <div class="metric-label">Session ID</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="analysisPasses">-</div>
+                            <div class="metric-label">Analysis Passes</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="cvSections">-</div>
+                            <div class="metric-label">CV Sections Found</div>
+                        </div>
+                    </div>
+
+                    <div class="expandable">
+                        <div class="expandable-header" onclick="toggleExpandable('analysisReport')">
+                            <span>View Full Analysis Report</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="expandable-content open" id="analysisReport">
+                            <textarea id="analysisReportText" class="text-area" readonly></textarea>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="downloadAnalysis()">
+                        Download Analysis Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Questions Generation Section -->
+            <div id="questionsSection" class="hidden">
+                <div class="column">
+                    <h2 class="section-header">Interview Questions Generation</h2>
+                    <p>Generate targeted interview questions based on the CV analysis to help evaluate the candidate effectively.</p>
+
+                    <div style="display: flex; gap: 20px; align-items: center; margin: 20px 0;">
+                        <button id="generateQuestionsBtn" class="btn btn-secondary" onclick="generateQuestions()" disabled>
+                            Generate Interview Questions
+                        </button>
+                        <div id="questionsProgress" class="hidden">
+                            <div class="spinner"></div>
+                            <span>Generating questions...</span>
+                        </div>
+                    </div>
+
+                    <div id="questionsResults" class="hidden">
+                        <div class="expandable">
+                            <div class="expandable-header" onclick="toggleExpandable('questionsReport')">
+                                <span>View Interview Questions</span>
+                                <span>▼</span>
+                            </div>
+                            <div class="expandable-content open" id="questionsReport">
+                                <textarea id="questionsReportText" class="text-area" readonly></textarea>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-secondary" onclick="downloadQuestions()">
+                            Download Interview Questions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentSession = null;
+        let extractedCvPath = null;
+        let analysisResults = null;
+        let questionsResults = null;
+
+        // Initialize default prompts
+        const defaultPrompts = {
+            skills: `# Skills Comprehensive Analysis
+Analyze ONLY the skills section of the provided CV. You must analyze every single skill individually with complete detail. No shortcuts, no placeholders allowed.
+
+## Requirements:
+- Identify ALL skill categories in the CV
+- Analyze each individual skill with:
+  * Evidence in work experience (specific roles where demonstrated)
+  * Evidence in projects (specific projects using this skill)
+  * Educational foundation support
+  * Proficiency indicators present or absent
+  * Application context from CV
+  * Validation strength assessment
+
+## Output Format:
+\`\`\`
+SKILLS COMPREHENSIVE ANALYSIS
+Total Skills Categories: [Count]
+Total Individual Skills: [Count]
+
+[For each skill category:]
+CATEGORY: [Exact category name from CV]
+SKILL: [Individual skill name]
+CV Location: [Where mentioned]
+Work Evidence: [Specific roles demonstrating this skill or "Not demonstrated"]
+Project Evidence: [Specific projects using this skill or "Not demonstrated"]
+Educational Support: [Academic foundation or "Not established"]
+Proficiency Level: [Any level claimed or "Not specified in CV"]
+Application Context: [How skill is used or "Not specified in CV"]
+Validation Status: [Strong/Moderate/Weak/None with reasoning]
+
+[Continue for EVERY skill in EVERY category]
+
+Skills Evidence Summary:
+- Well-Supported Skills: [Count and list]
+- Partially Supported Skills: [Count and list]
+- Unsupported Skills: [Count and list]
+- Missing Industry Standard Tools: [What's absent for experience level]
+\`\`\`
+
+Complete this analysis for ALL skills before stopping.`,
+
+            experience: `# Work Experience Forensic Analysis
+Analyze ONLY the work experience section. You must analyze every position individually with complete responsibility breakdown. No shortcuts allowed.
+
+## Requirements:
+- Analyze each employment position individually
+- Break down every responsibility statement
+- Identify quantitative gaps systematically
+- Map skills validation for each role
+- Assess timeline consistency
+
+## Output Format:
+\`\`\`
+WORK EXPERIENCE COMPREHENSIVE ANALYSIS
+Total Positions: [Count]
+
+[For each position:]
+POSITION: [Job Title] at [Company] ([Dates])
+Duration: [Calculated length]
+Industry Context: [Determined field or "Cannot determine from CV"]
+Location: [Specified or "Not specified in CV"]
+
+Responsibility Breakdown:
+Responsibility 1: [Exact text from CV]
+- Action Verbs: [Leadership/action words used]
+- Scope Elements: [Scale/size mentions or "Not specified"]
+- Quantitative Data: [Numbers/percentages or "None stated"]
+- Technology References: [Tools/systems mentioned]
+- Outcome Descriptions: [Results stated or "Not specified"]
+- Skills Demonstrated: [Which CV skills this validates]
+- Missing Quantification: [Expected metrics absent]
+
+[Continue for ALL responsibilities under this position]
+
+Quantitative Gaps Summary:
+- Financial Data Missing: [Budget, revenue, cost information absent]
+- Performance Metrics Missing: [Achievement, target, efficiency data absent]
+- Scale Indicators Missing: [Team size, project scope, user base data absent]
+- Quality Measures Missing: [Accuracy, reliability, satisfaction data absent]
+- Timeline Data Missing: [Duration, deadline, delivery information absent]
+
+Skills Validation for This Position:
+- Demonstrated Skills: [CV skills proven by this position]
+- Undemonstrated Skills: [CV skills lacking evidence in this role]
+
+[Repeat for ALL positions]
+
+Timeline Consistency Analysis:
+- Employment Sequence: [Chronological verification]
+- Gap Analysis: [Any employment gaps with duration]
+- Date Consistency: [Verification across CV sections]
+\`\`\`
+
+Complete this analysis for ALL positions before stopping.`,
+
+            projects: `# Projects Comprehensive Examination
+Analyze ONLY the projects mentioned in the CV. You must analyze every project individually with complete technical and business breakdown.
+
+## Requirements:
+- Identify ALL projects mentioned anywhere in CV
+- Provide comprehensive technical implementation analysis
+- Assess business value and impact
+- Document quantitative outcomes present and missing
+- Validate skills demonstration through projects
+
+## Output Format:
+\`\`\`
+PROJECTS COMPREHENSIVE ANALYSIS
+Total Projects: [Count]
+
+[For each project:]
+PROJECT: [Exact project name]
+CV Location: [Where mentioned in CV]
+Description: [Complete description from CV]
+
+Project Context:
+- Business Domain: [Industry/application area or "Not specified in CV"]
+- Timeline: [Duration/dates mentioned or "Not specified in CV"]
+- Team Role: [Position/responsibility or "Not specified in CV"]
+- Budget/Scale: [Resource scope or "Not specified in CV"]
+
+Technical Implementation Analysis:
+- Technologies Used: [Complete list from CV or "Not specified in CV"]
+- Architecture Approach: [Design methodology or "Not specified in CV"]
+- System Integration: [Connections described or "Not specified in CV"]
+- Performance Requirements: [Speed/scale needs or "Not specified in CV"]
+- Security Implementation: [Safety measures or "Not specified in CV"]
+- Development Methodology: [Process approach or "Not specified in CV"]
+
+Business Value Analysis:
+- Problem Solved: [Issue addressed or "Not specified in CV"]
+- User Benefits: [Value delivered or "Not specified in CV"]
+- Business Impact: [Organizational effect or "Not specified in CV"]
+- Innovation Elements: [Creative aspects or "Not specified in CV"]
+- Market Relevance: [Industry significance or "Not specified in CV"]
+
+Quantitative Outcomes Analysis:
+- User Metrics: [Adoption, usage data or "Not specified in CV"]
+- Performance Data: [Speed, efficiency improvements or "Not specified in CV"]
+- Business Results: [Cost, revenue impact or "Not specified in CV"]
+- Quality Measures: [Accuracy, reliability data or "Not specified in CV"]
+- Delivery Metrics: [Timeline, milestone data or "Not specified in CV"]
+- Scalability Results: [Growth capacity or "Not specified in CV"]
+
+Skills Validation Analysis:
+- Technical Skills Proven: [CV skills this project demonstrates]
+- Soft Skills Evidenced: [Leadership, communication shown]
+- Problem-Solving Demonstrated: [Analytical capabilities shown]
+- Innovation Displayed: [Creative thinking evidenced]
+- Undemonstrated Claims: [CV skills not supported by this project]
+
+Critical Missing Details:
+- Most Important Quantitative Gaps: [Priority measurements absent]
+- Technical Specification Gaps: [Missing technical details]
+- Business Impact Gaps: [Missing value metrics]
+
+[Repeat for ALL projects]
+\`\`\`
+
+Complete this analysis for ALL projects before stopping.`,
+
+            education: `# Education and Academic Background Analysis
+Analyze education, academic achievements, and learning background comprehensively.
+
+## Requirements:
+- Analyze each degree/certification individually
+- Assess academic achievements and research
+- Evaluate professional relevance
+- Identify missing academic details
+
+## Output Format:
+\`\`\`
+EDUCATION AND ACADEMIC ANALYSIS
+
+[For each educational credential:]
+DEGREE: [Institution] - [Degree] - [Year]
+Recognition Level: [Institution standing assessment]
+Field Relevance: [Professional alignment with career]
+Academic Achievements: [Honors, GPA, thesis details or "Not specified in CV"]
+Research Work: [Thesis, projects, publications or "Not specified in CV"]
+Relevant Coursework: [Specific courses or "Not specified in CV"]
+Professional Value: [How education validates career claims]
+Missing Academic Details: [Standard information absent]
+
+[For each certification:]
+CERTIFICATION: [Title] - [Issuer] - [Date]
+Industry Recognition: [Credential value assessment]
+Professional Relevance: [Career alignment]
+Work Application Evidence: [How certification appears in experience]
+Missing Details: [Validity, renewal, credential ID gaps]
+
+Academic Development Assessment:
+- Educational Foundation Strength: [Assessment]
+- Professional Alignment: [How education supports career]
+- Continuing Education Evidence: [Ongoing learning demonstration]
+- Academic Gaps: [Missing standard educational information]
+\`\`\``,
+
+            integration: `# Integration and Comprehensive Assessment
+Using previous analyses, provide final integration, cross-validation, and comprehensive recommendations.
+
+## Requirements:
+- Cross-validate findings across all sections
+- Identify overarching patterns and gaps
+- Provide prioritized improvement recommendations
+- Create final comprehensive assessment
+
+## Output Format:
+\`\`\`
+INTEGRATION AND FINAL ASSESSMENT
+
+Cross-Validation Analysis:
+- Skills-Experience Alignment: [How well skills match work evidence]
+- Skills-Projects Alignment: [How well skills match project evidence]
+- Experience-Education Alignment: [Career progression logic]
+- Timeline Consistency: [Date and progression verification]
+
+Overarching Patterns:
+- Quantification Consistency: [Overall metrics presence assessment]
+- Professional Narrative: [Career story coherence]
+- Evidence Quality: [Overall validation strength]
+
+Priority Enhancement Recommendations:
+CRITICAL (Address Immediately):
+1. [Most important gap with specific recommendation]
+2. [Second most critical issue with solution]
+3. [Third priority with implementation suggestion]
+
+IMPORTANT (Address Next):
+1. [Significant improvement with specific action]
+2. [Next priority enhancement with details]
+3. [Additional important upgrade with guidance]
+
+BENEFICIAL (Address When Possible):
+1. [Professional enhancement opportunity]
+2. [Additional improvement suggestion]
+3. [Long-term development recommendation]
+
+Final Professional Assessment:
+- Overall Presentation Quality: [Comprehensive evaluation]
+- Career Advancement Readiness: [Assessment for target roles]
+- Competitive Positioning: [Market competitiveness evaluation]
+- Success Implementation Plan: [Next steps for improvement]
+\`\`\``,
+
+            questions: `# Interview Questions Generation
+Based on the CV content and comprehensive analysis, generate targeted interview questions that will help employers assess the candidate effectively.
+
+## Requirements:
+- Generate questions that test claimed skills and experiences
+- Focus on areas where the CV lacks detail or evidence
+- Include both technical and behavioral questions
+- Provide questions that validate or challenge weak areas identified in the analysis
+- Create questions that allow the candidate to demonstrate their actual capabilities
+
+## Output Format:
+\`\`\`
+COMPREHENSIVE INTERVIEW QUESTIONS
+
+Technical Skills Validation Questions:
+[Generate 8-12 questions that test the technical skills claimed in the CV]
+
+Experience Verification Questions:
+[Generate 6-10 questions that probe the depth of work experience claims]
+
+Project Deep-Dive Questions:
+[Generate 5-8 questions that explore project details and technical implementations]
+
+Behavioral and Soft Skills Questions:
+[Generate 6-8 questions that assess leadership, communication, and problem-solving abilities]
+
+Gap Analysis Questions:
+[Generate 4-6 questions specifically targeting weak areas or gaps identified in the analysis]
+
+Scenario-Based Questions:
+[Generate 5-7 situational questions that test practical application of skills]
+
+Red Flag Investigation Questions:
+[Generate 3-5 questions that address any inconsistencies or concerns from the CV analysis]
+
+Questions by Difficulty Level:
+ENTRY LEVEL (Easy):
+[3-5 basic questions to establish baseline competency]
+
+INTERMEDIATE (Medium):
+[5-7 questions that test practical application and experience]
+
+ADVANCED (Hard):
+[4-6 challenging questions for senior positions or specialist roles]
+
+Interview Strategy Recommendations:
+- Suggested interview flow and question sequencing
+- Key areas to focus on based on the role level
+- Warning signs to watch for in responses
+- Follow-up question strategies for each major area
+\`\`\`
+
+Generate comprehensive questions that will thoroughly evaluate this candidate's actual capabilities versus their CV claims.`
+        };
+
+        // Password check function
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'Abc123!@#7'; // In real app, this would be environment variable
+
+            if (password === correctPassword) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                initializeApp();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        // Initialize application
+        function initializeApp() {
+            // Load default prompts
+            Object.keys(defaultPrompts).forEach(key => {
+                const element = document.getElementById(key + 'Prompt');
+                if (element) {
+                    element.value = defaultPrompts[key];
+                }
+            });
+
+            // Setup file upload
+            setupFileUpload();
+
+            // Check inputs to enable/disable buttons
+            checkInputs();
+        }
+
+        // Setup file upload functionality
+        function setupFileUpload() {
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            const fileInput = document.getElementById('pdfFileInput');
+
+            // Click to select file
+            fileUploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            });
+
+            // Drag and drop functionality
+            fileUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                fileUploadArea.classList.add('dragover');
+            });
+
+            fileUploadArea.addEventListener('dragleave', () => {
+                fileUploadArea.classList.remove('dragover');
+            });
+
+            fileUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                fileUploadArea.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        // Handle file upload and text extraction
+        async function handleFileUpload(file) {
+            if (file.type !== 'application/pdf') {
+                showAlert('Please select a PDF file.', 'error');
+                return;
+            }
+
+            // Generate session ID
+            currentSession = Math.random().toString(36).substr(2, 8);
+
+            // Show upload progress
+            document.getElementById('uploadStatus').classList.remove('hidden');
+            document.getElementById('uploadMessage').innerHTML = 'Extracting text from PDF...';
+
+            // Simulate progress (in real app, would use PDF.js or server-side processing)
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 10;
+                document.getElementById('uploadProgress').style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    simulateTextExtraction(file);
+                }
+            }, 200);
+        }
+
+        // Simulate text extraction (in real app, would use PDF.js)
+        function simulateTextExtraction(file) {
+            // In a real application, you would use PDF.js or send to server for processing
+            const mockExtractedText = `JOHN SMITH
+Software Engineer
+Email: john.smith@email.com
+Phone: (555) 123-4567
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 5 years in full-stack development...
+
+TECHNICAL SKILLS
+- Programming Languages: Python, JavaScript, Java
+- Frameworks: React, Node.js, Django
+- Databases: MySQL, MongoDB, PostgreSQL
+- Cloud: AWS, Azure
+
+WORK EXPERIENCE
+Senior Software Engineer at TechCorp (2021-Present)
+- Developed web applications using React and Node.js
+- Led team of 3 developers
+- Improved system performance by 40%
+
+Software Engineer at StartupXYZ (2019-2021)
+- Built REST APIs using Python and Django
+- Worked with PostgreSQL databases
+- Collaborated in agile development environment
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology (2019)
+
+PROJECTS
+E-commerce Platform
+- Built full-stack application using MERN stack
+- Implemented payment processing
+- Deployed on AWS`;
+
+            // Save extracted text
+            extractedCvPath = `cv${currentSession}_extracted.txt`;
+
+            // Show success
+            document.getElementById('uploadMessage').innerHTML =
+                `<div class="alert alert-success">
+                    <strong>Text extracted successfully!</strong><br>
+                    Saved as: ${extractedCvPath}<br>
+                    Characters: ${mockExtractedText.length}
+                </div>`;
+
+            // Show extracted info
+            document.getElementById('extractedInfo').classList.remove('hidden');
+            document.getElementById('extractedDetails').innerHTML =
+                `Saved as: ${extractedCvPath} | Characters: ${mockExtractedText.length}`;
+            document.getElementById('cvPreviewText').value = mockExtractedText;
+
+            // Update session info
+            document.getElementById('sessionInfo').innerHTML =
+                `<div class="alert alert-success">Session: ${currentSession}...</div>`;
+
+            // Enable analysis button if API key is provided
+            checkInputs();
+        }
+
+        // Check inputs and enable/disable buttons
+        function checkInputs() {
+            const apiKey = document.getElementById('apiKey').value;
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const generateQuestionsBtn = document.getElementById('generateQuestionsBtn');
+
+            // Check analyze button
+            if (extractedCvPath && apiKey) {
+                analyzeBtn.disabled = false;
+                document.getElementById('warningsList').innerHTML = '';
+                document.getElementById('analysisWarnings').classList.add('hidden');
+            } else {
+                analyzeBtn.disabled = true;
+                const warnings = [];
+                if (!extractedCvPath) warnings.push('Please upload and extract a CV first');
+                if (!apiKey) warnings.push('Please provide OpenAI API key');
+
+                if (warnings.length > 0) {
+                    document.getElementById('warningsList').innerHTML =
+                        warnings.map(w => `<li>${w}</li>`).join('');
+                    document.getElementById('analysisWarnings').classList.remove('hidden');
+                }
+            }
+
+            // Check questions button
+            if (analysisResults && apiKey) {
+                generateQuestionsBtn.disabled = false;
+            } else {
+                generateQuestionsBtn.disabled = true;
+            }
+        }
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Remove active class from all buttons and contents
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // Toggle expandable sections
+        function toggleExpandable(id) {
+            const content = document.getElementById(id);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('span:last-child');
+
+            content.classList.toggle('open');
+            icon.textContent = content.classList.contains('open') ? '▲' : '▼';
+        }
+
+        // Run CV analysis
+        async function runAnalysis() {
+            if (!extractedCvPath || !document.getElementById('apiKey').value) {
+                showAlert('Please provide CV and API key', 'error');
+                return;
+            }
+
+            // Show progress
+            document.getElementById('analysisProgress').classList.remove('hidden');
+            document.getElementById('analyzeBtn').disabled = true;
+
+            // Simulate analysis phases
+            const phases = [
+                'Detecting CV structure...',
+                'Analyzing skills section...',
+                'Analyzing work experience...',
+                'Analyzing projects...',
+                'Analyzing education...',
+                'Performing integration analysis...',
+                'Generating comprehensive report...'
+            ];
+
+            let currentPhase = 0;
+            const phaseInterval = setInterval(() => {
+                document.getElementById('analysisProgressText').textContent = phases[currentPhase];
+                currentPhase++;
+
+                if (currentPhase >= phases.length) {
+                    clearInterval(phaseInterval);
+                    completeAnalysis();
+                }
+            }, 2000);
+        }
+
+        // Complete analysis and show results
+        function completeAnalysis() {
+            // Hide progress
+            document.getElementById('analysisProgress').classList.add('hidden');
+            document.getElementById('analyzeBtn').disabled = false;
+
+            // Mock analysis results
+            analysisResults = {
+                session_id: currentSession,
+                analysis_passes_completed: ['skills_analysis', 'experience_analysis', 'projects_analysis', 'education_analysis', 'integration_analysis'],
+                cv_structure_detected: {
+                    has_skills: true,
+                    has_experience: true,
+                    has_projects: true,
+                    has_education: true
+                },
+                comprehensive_analysis: `COMPREHENSIVE CV ANALYSIS REPORT
+Session ID: ${currentSession}
+Analysis Date: ${new Date().toLocaleString()}
+GPT Model Used: ${document.getElementById('gptModel').value}
+CV Structure Detected: Skills, Experience, Projects, Education
+Analysis Passes Completed: 5
+================================================================================
+
+SKILLS ANALYSIS
+================================================================================
+SKILLS COMPREHENSIVE ANALYSIS
+Total Skills Categories: 4
+Total Individual Skills: 12
+
+CATEGORY: Programming Languages
+SKILL: Python
+CV Location: Technical Skills section, Experience section
+Work Evidence: Used at TechCorp and StartupXYZ for API development
+Project Evidence: Not demonstrated in specific projects
+Educational Support: Covered in Computer Science degree
+Proficiency Level: Not specified in CV
+Application Context: Used for Django web development and API creation
+Validation Status: Moderate - mentioned in work context but lacks project evidence
+
+SKILL: JavaScript
+CV Location: Technical Skills section, Experience section
+Work Evidence: Used at TechCorp for React development
+Project Evidence: Mentioned in E-commerce Platform project (MERN stack)
+Educational Support: Likely covered in Computer Science curriculum
+Proficiency Level: Not specified in CV
+Application Context: Full-stack development with React and Node.js
+Validation Status: Strong - demonstrated in both work and project contexts
+
+[Additional skills analysis continues...]
+
+================================================================================
+
+EXPERIENCE ANALYSIS
+================================================================================
+WORK EXPERIENCE COMPREHENSIVE ANALYSIS
+Total Positions: 2
+
+POSITION: Senior Software Engineer at TechCorp (2021-Present)
+Duration: 2+ years
+Industry Context: Technology/Software Development
+Location: Not specified in CV
+
+Responsibility Breakdown:
+Responsibility 1: Developed web applications using React and Node.js
+- Action Verbs: Developed (technical implementation)
+- Scope Elements: Not specified
+- Quantitative Data: None stated
+- Technology References: React, Node.js
+- Outcome Descriptions: Not specified
+- Skills Demonstrated: JavaScript, React, Node.js
+- Missing Quantification: Number of applications, user base, performance metrics
+
+Responsibility 2: Led team of 3 developers
+- Action Verbs: Led (leadership)
+- Scope Elements: Team size specified (3 developers)
+- Quantitative Data: Team size (3)
+- Technology References: None
+- Outcome Descriptions: Not specified
+- Skills Demonstrated: Leadership, team management
+- Missing Quantification: Project outcomes, team performance metrics
+
+[Additional experience analysis continues...]
+
+================================================================================
+
+INTEGRATION AND FINAL ASSESSMENT
+================================================================================
+
+Cross-Validation Analysis:
+- Skills-Experience Alignment: Good alignment between claimed technical skills and work responsibilities
+- Skills-Projects Alignment: Limited project details make validation difficult
+- Experience-Education Alignment: Computer Science background supports technical roles
+- Timeline Consistency: Clear career progression from junior to senior role
+
+Priority Enhancement Recommendations:
+CRITICAL (Address Immediately):
+1. Add quantitative metrics to all achievements (performance improvements, user numbers, revenue impact)
+2. Provide detailed project descriptions with technical specifications and outcomes
+3. Specify proficiency levels for all technical skills
+
+IMPORTANT (Address Next):
+1. Include specific technologies and tools used in each role
+2. Add professional certifications and continuing education
+3. Provide context for leadership and collaboration experiences
+
+Final Professional Assessment:
+- Overall Presentation Quality: Basic but professional, lacks compelling details
+- Career Advancement Readiness: Ready for senior roles with enhanced metrics
+- Competitive Positioning: Average - needs quantification to stand out
+- Success Implementation Plan: Focus on metrics, projects, and continuous learning evidence
+
+================================================================================
+END OF COMPREHENSIVE ANALYSIS
+================================================================================`
+            };
+
+            // Show results
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('questionsSection').classList.remove('hidden');
+
+            // Update metrics
+            document.getElementById('sessionId').textContent = currentSession.substring(0, 8);
+            document.getElementById('analysisPasses').textContent = analysisResults.analysis_passes_completed.length;
+            document.getElementById('cvSections').textContent = Object.values(analysisResults.cv_structure_detected).filter(v => v).length;
+
+            // Show analysis report
+            document.getElementById('analysisReportText').value = analysisResults.comprehensive_analysis;
+
+            // Enable questions generation
+            checkInputs();
+
+            showAlert('Analysis completed successfully!', 'success');
+        }
+
+        // Generate interview questions
+        async function generateQuestions() {
+            if (!analysisResults || !document.getElementById('apiKey').value) {
+                showAlert('Please complete analysis first', 'error');
+                return;
+            }
+
+            // Show progress
+            document.getElementById('questionsProgress').classList.remove('hidden');
+            document.getElementById('generateQuestionsBtn').disabled = true;
+
+            // Simulate questions generation
+            setTimeout(() => {
+                completeQuestionsGeneration();
+            }, 3000);
+        }
+
+        // Complete questions generation
+        function completeQuestionsGeneration() {
+            // Hide progress
+            document.getElementById('questionsProgress').classList.add('hidden');
+            document.getElementById('generateQuestionsBtn').disabled = false;
+
+            // Mock questions results
+            questionsResults = {
+                response: `COMPREHENSIVE INTERVIEW QUESTIONS
+
+Technical Skills Validation Questions:
+1. Can you walk me through a specific React application you built at TechCorp? What components did you create and how did they interact?
+2. Describe your experience with Node.js. What specific APIs or services did you develop?
+3. You mentioned improving system performance by 40%. Can you explain the specific optimizations you implemented?
+4. What Python frameworks have you worked with beyond Django? Can you compare their strengths and weaknesses?
+5. Describe your database design experience. Can you walk through a complex schema you've created?
+6. How do you handle error handling and logging in your applications?
+7. What testing strategies do you use for both frontend and backend code?
+8. Describe your experience with AWS services. Which specific services have you used and why?
+
+Experience Verification Questions:
+1. As a Senior Software Engineer leading 3 developers, how did you manage task allocation and code reviews?
+2. What was your biggest technical challenge at TechCorp and how did you solve it?
+3. Can you describe the development process and methodologies used at your current company?
+4. How do you handle conflicting priorities and tight deadlines in your current role?
+5. What metrics do you use to measure the success of your projects?
+6. Describe a situation where you had to mentor a junior developer. What was your approach?
+
+Project Deep-Dive Questions:
+1. For your E-commerce Platform project, can you explain the architecture and why you chose the MERN stack?
+2. How did you implement payment processing? What security considerations did you address?
+3. What was the scale of this e-commerce platform? How many concurrent users could it handle?
+4. Can you walk through your deployment process on AWS? What services did you use?
+5. How did you handle inventory management and order processing in your system?
+6. What challenges did you face during development and how did you overcome them?
+
+Behavioral and Soft Skills Questions:
+1. Describe a time when you had to disagree with a technical decision. How did you handle it?
+2. How do you stay updated with new technologies and industry trends?
+3. Tell me about a time when you had to learn a new technology quickly for a project.
+4. How do you approach code reviews? What do you look for?
+5. Describe a situation where you had to collaborate with non-technical stakeholders.
+6. How do you prioritize technical debt versus new feature development?
+
+Gap Analysis Questions:
+1. I notice your CV doesn't mention any certifications. Do you have any professional certifications or are you working toward any?
+2. Can you provide more details about your university projects or thesis work?
+3. What specific methodologies (Agile, Scrum, etc.) have you worked with, and what was your role in those processes?
+4. Your CV mentions MongoDB but doesn't show specific projects using it. Can you elaborate?
+
+Scenario-Based Questions:
+1. If you had to design a system to handle 1 million concurrent users, what would your approach be?
+2. A critical production bug is reported. Walk me through your debugging process.
+3. You're tasked with improving the performance of a slow database query. What steps would you take?
+4. How would you architect a microservices system for an e-commerce platform?
+5. A junior developer on your team is struggling with React concepts. How would you help them?
+
+Red Flag Investigation Questions:
+1. You mention a 40% performance improvement. Can you provide specific metrics and timeframes?
+2. How do you measure and track the impact of your technical decisions?
+3. Can you provide references from your current or previous team members?
+
+Interview Strategy Recommendations:
+- Start with technical skills validation to establish credibility
+- Follow up quantitative claims with specific examples and metrics
+- Focus heavily on the E-commerce project as it's the only detailed project mentioned
+- Watch for vague or non-specific answers about achievements
+- Ask for code samples or portfolio demonstration
+- Verify leadership claims with specific team management examples
+
+Questions by Difficulty Level:
+ENTRY LEVEL (Easy):
+1. What's the difference between var, let, and const in JavaScript?
+2. Explain the concept of RESTful APIs
+3. What is version control and why is it important?
+
+INTERMEDIATE (Medium):
+1. How would you optimize a React application for performance?
+2. Explain database indexing and when you would use it
+3. What are the advantages and disadvantages of microservices architecture?
+4. How do you handle authentication and authorization in web applications?
+5. Describe the difference between SQL and NoSQL databases
+
+ADVANCED (Hard):
+1. Design a caching strategy for a high-traffic web application
+2. How would you implement real-time features in a web application?
+3. Explain how you would design a distributed system for global scale
+4. What are the security considerations for a payment processing system?`,
+                success: true
+            };
+
+            // Show results
+            document.getElementById('questionsResults').classList.remove('hidden');
+            document.getElementById('questionsReportText').value = questionsResults.response;
+
+            showAlert('Interview questions generated successfully!', 'success');
+        }
+
+        // Download functions
+        function downloadAnalysis() {
+            if (analysisResults) {
+                downloadFile(analysisResults.comprehensive_analysis, `cv_analysis_${currentSession}.txt`);
+            }
+        }
+
+        function downloadQuestions() {
+            if (questionsResults) {
+                downloadFile(questionsResults.response, `interview_questions_${currentSession}.txt`);
+            }
+        }
+
+        // Utility function to download text as file
+        function downloadFile(content, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Show alert messages
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.maxWidth = '400px';
+
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+
+        // Event listeners
+        document.getElementById('apiKey').addEventListener('input', checkInputs);
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Initialize tooltips and help text
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add any initialization code here
+        });
+    </script>
+</body>
+</html>
